@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>HSK 1 Mastery Lab</title>
+<style>
+:root{--bg:#f5f5f7;--card:#fff;--text:#171717;--muted:#6b7280;--line:#e5e7eb;--accent:#111827;--good:#15803d;--bad:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{padding:24px 18px 10px;max-width:900px;margin:auto}h1{margin:0;font-size:28px}.sub{color:var(--muted);margin-top:5px}
+nav{display:flex;gap:8px;overflow:auto;padding:10px 18px;max-width:900px;margin:auto}button,.tab{border:0;border-radius:12px;padding:11px 15px;font-weight:700;cursor:pointer;background:#e5e7eb;color:#111827}
+.tab.active,button.primary{background:var(--accent);color:white}
+main{max-width:900px;margin:auto;padding:10px 18px 50px}.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 5px 20px #00000008}
+.hidden{display:none}.big{font-size:40px;font-weight:800;text-align:center;margin:25px 0 5px}.pinyin{text-align:center;color:var(--muted);font-size:19px}.meaning{text-align:center;font-size:22px;margin:18px 0}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.stat{background:#fafafa;border:1px solid var(--line);padding:15px;border-radius:14px}.stat b{font-size:25px;display:block}
+input,textarea,select{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;font-size:17px;margin-top:8px}
+.prompt{font-size:24px;font-weight:750;margin:10px 0 18px}.feedback{margin-top:14px;font-weight:700}.good{color:var(--good)}.bad{color:var(--bad)}
+.small{font-size:13px;color:var(--muted)}.rule{padding:15px;border-left:4px solid #111827;background:#f9fafb;margin:10px 0;border-radius:8px}
+.word{padding:15px;border:1px solid var(--line);border-radius:14px}.word .zh{font-size:25px;font-weight:800}.word .en{color:var(--muted)}
+.score{font-size:18px;font-weight:800;text-align:right}.examOpt{display:block;width:100%;margin:9px 0;text-align:left;background:#fafafa;border:1px solid var(--line);font-size:17px}.examOpt:hover{background:#f0f0f0}
+.speakBtn{padding:8px 12px;border-radius:10px;font-size:15px}.voiceBox{margin-top:14px;padding:14px;background:#fafafa;border:1px solid var(--line);border-radius:14px}.voiceGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.voiceBox label{font-size:13px;color:var(--muted);font-weight:700}.voiceBox .row{justify-content:flex-start;margin-top:10px}.voiceBox input[type=range]{padding:0;margin:4px 0}.voiceStatus{font-size:13px;color:var(--muted);margin-top:8px}
+
+.realOpt{display:block;width:100%;text-align:left;margin:9px 0;padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--card);cursor:pointer;font-size:16px}.realOpt.selected{border-color:var(--accent);box-shadow:0 0 0 2px rgba(0,0,0,.06);font-weight:700}.pictureChoices{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.pictureCard{flex:1;min-width:100px;border:1px solid var(--border);border-radius:14px;padding:12px;text-align:center;background:var(--card)}.picture{font-size:42px;min-height:52px;display:flex;align-items:center;justify-content:center}.examMeta{font-weight:700;margin:8px 0 14px}.diagRow{display:flex;justify-content:space-between;padding:9px 12px;border-bottom:1px solid var(--border)}.mistake{padding:12px;margin:8px 0;border:1px solid var(--border);border-radius:12px}.resultHero{text-align:center;padding:20px;border:1px solid var(--border);border-radius:16px;margin-bottom:16px}.resultScore{font-size:48px;font-weight:800}
+
+.topicPath{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0 4px}.topicNode{border:1px solid var(--line);border-radius:16px;padding:14px;background:linear-gradient(180deg,#fff,#fafafa);cursor:pointer;transition:.18s}.topicNode:hover{transform:translateY(-2px);box-shadow:0 8px 20px #0000000b}.topicNode .num{font-size:12px;color:var(--muted);font-weight:800}.topicNode .title{font-weight:800;margin-top:5px}.topicNode .bar{height:7px;background:#e5e7eb;border-radius:999px;margin-top:10px;overflow:hidden}.topicNode .fill{height:100%;background:linear-gradient(90deg,#58cc02,#1cb0f6);border-radius:999px}.topicCard{border:1px solid var(--line);border-radius:18px;padding:17px;background:#fff}.topicCard h3{margin:4px 0 7px}.topicTags{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0}.topicTag{font-size:12px;background:#f1f5f9;border-radius:999px;padding:5px 8px}.topicQ{font-size:22px;font-weight:800;margin:14px 0}.topicFeedback{margin-top:12px;padding:11px;border-radius:12px}.topicFeedback.good{background:#ecfdf3;color:#166534}.topicFeedback.bad{background:#fef2f2;color:#991b1b}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.charGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(45px,1fr));gap:8px}
+.charGrid span{display:flex;align-items:center;justify-content:center;padding:10px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;font-size:22px;font-weight:700}
+@media(max-width:600px){.grid2{grid-template-columns:1fr}}
+</style>
+<style>
+/* Duolingo-inspired visual refresh — functionality preserved */
+:root{--bg:#f7f9fc;--card:#fff;--text:#172033;--muted:#667085;--line:#e5eaf2;--accent:#16a34a;--accent2:#0ea5e9;--good:#16a34a;--bad:#dc2626;--purple:#7c3aed;--gold:#f59e0b}
+body{background:radial-gradient(circle at 10% 0%,#e8f7ef 0,transparent 32%),radial-gradient(circle at 95% 10%,#eaf3ff 0,transparent 30%),var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;letter-spacing:-.01em}
+header{max-width:980px;padding:20px 16px 8px}
+header h1{font-size:30px;letter-spacing:-.04em;background:linear-gradient(90deg,#16803b,#0b7fc4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:14px;margin-top:4px}
+nav{max-width:980px;padding:10px 14px;gap:7px;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+.tab{background:#fff;border:1px solid var(--line);color:#344054;border-radius:999px;padding:10px 14px;box-shadow:0 2px 8px #1720330a;white-space:nowrap;transition:.18s transform,.18s box-shadow,.18s background}
+.tab:active{transform:scale(.96)}
+.tab.active{background:linear-gradient(135deg,#16a34a,#0f8a3d);border-color:#16a34a;color:#fff;box-shadow:0 5px 16px #16a34a33}
+main{max-width:980px;padding:12px 16px 60px}
+.panel{border:1px solid #e7ecf3;border-radius:24px;padding:22px;box-shadow:0 12px 35px #1720330d;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);animation:panelIn .22s ease}
+@keyframes panelIn{from{opacity:.65;transform:translateY(4px)}to{opacity:1;transform:none}}
+h2{letter-spacing:-.03em;font-size:25px}h3{letter-spacing:-.02em}
+button{background:#eef2f7;color:#263244;border:1px solid #e1e7ef;border-radius:14px;box-shadow:0 2px 0 #d6dde7;transition:transform .12s,box-shadow .12s,filter .12s}
+button:hover{filter:brightness(1.02);transform:translateY(-1px)}button:active{transform:translateY(1px);box-shadow:0 1px 0 #d6dde7}
+button.primary{background:linear-gradient(180deg,#22b55b,#159447);border-color:#13863f;box-shadow:0 3px 0 #0f7336;color:#fff}
+.grid{gap:12px}
+.stat{border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,#fff,#f8fafc);padding:16px;position:relative;overflow:hidden}
+.stat:after{content:"";position:absolute;inset:auto -20px -35px auto;width:90px;height:90px;border-radius:50%;background:#16a34a0d}
+.stat b{font-size:28px}
+.big{font-size:54px;line-height:1.05;margin:30px 0 7px}
+.pinyin{font-size:19px;color:#65738a}
+.meaning{font-weight:700}
+input,textarea,select{border:2px solid #e5eaf1;border-radius:14px;background:#fbfcfe;outline:none;transition:.15s border-color,.15s box-shadow}
+input:focus,textarea:focus,select:focus{border-color:#16a34a;box-shadow:0 0 0 4px #16a34a16}
+.prompt{font-size:25px;line-height:1.35}
+.rule{border:1px solid #e4eaf2;border-left:5px solid #16a34a;background:linear-gradient(90deg,#f7fff9,#fff);border-radius:14px;padding:15px;box-shadow:0 3px 12px #17203308}
+.word{border:1px solid #e4eaf2;border-radius:18px;background:#fff;box-shadow:0 5px 16px #17203308;transition:.15s transform}
+.word:hover{transform:translateY(-2px)}
+.word .zh{font-size:28px}
+.voiceBox{background:linear-gradient(135deg,#f0fff6,#f1f7ff);border:1px solid #dceee4;border-radius:20px;box-shadow:0 7px 22px #1720330b}
+.examOpt,.realOpt{border:2px solid #e5eaf1!important;background:#fff;border-radius:16px;box-shadow:0 2px 0 #e0e6ee;transition:.14s}
+.examOpt:hover,.realOpt:hover{border-color:#b9c7d9!important;background:#f8fbff}
+.examOpt.selected,.realOpt.selected{border-color:#16a34a!important;background:#f0fff5;box-shadow:0 0 0 3px #16a34a18}
+.resultHero{background:linear-gradient(135deg,#f0fff5,#f3f7ff);border-color:#dbe8e0;border-radius:20px}
+.resultScore{font-size:56px;background:linear-gradient(90deg,#16a34a,#0ea5e9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.score{color:#667085}
+.small{line-height:1.45}
+.hidden{display:none!important}
+.speakBtn{background:#eef8ff;border-color:#cfe8f7;color:#09658e;box-shadow:0 2px 0 #c3dce9}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:5px 9px;border-radius:999px;background:#f2f4f7;color:#475467;font-size:12px;font-weight:800}
+.sectionTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+@media(max-width:600px){header h1{font-size:26px}.panel{padding:18px;border-radius:20px}.big{font-size:46px}.prompt{font-size:22px}.grid{grid-template-columns:1fr 1fr}.tab{padding:9px 12px;font-size:13px}}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.charGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(45px,1fr));gap:8px}
+.charGrid span{display:flex;align-items:center;justify-content:center;padding:10px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;font-size:22px;font-weight:700}
+@media(max-width:600px){.grid2{grid-template-columns:1fr}}
+</style>
+<style>
+.kbd{display:inline-block;font-size:11px;font-weight:700;padding:1px 6px;border:1px solid #d5dbe5;border-bottom-width:2px;border-radius:6px;background:#fff;color:#667085;margin-left:4px}
+.rcMeta{display:flex;justify-content:space-between;gap:10px;margin:2px 0 6px}
+.rcBar{height:8px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:8px}
+.rcFill{height:100%;background:linear-gradient(90deg,#58cc02,#1cb0f6);border-radius:999px;transition:width .3s}
+.rcTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.rcModes{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 8px}
+.rcChip{padding:8px 13px;font-size:14px;border-radius:999px}
+.rcChip.on{background:linear-gradient(180deg,#22b55b,#159447);border-color:#13863f;box-shadow:0 2px 0 #0f7336;color:#fff}
+.rcChip i{font-style:normal;opacity:.75;font-size:12px;margin-left:4px}
+.rcStats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0 12px}
+.rcStat{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:9px 6px;text-align:center}
+.rcStat b{display:block;font-size:22px}.rcStat span{font-size:11px;color:var(--muted)}
+.rcLabel{margin-top:18px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#16a34a}
+.rcBig{font-size:56px;font-weight:800;line-height:1.1;margin:6px 0}
+.rcHint{min-height:0;margin:-6px 0 10px;font-size:14px;color:#9a6700;font-weight:700;line-height:1.6}
+.rcPlay{font-size:20px;padding:16px 22px}
+.rcAns{margin-top:12px;padding:14px 16px;border:1px solid var(--line);border-left:5px solid #16a34a;border-radius:14px;background:linear-gradient(90deg,#f7fff9,#fff)}
+.rcAns.miss{border-left-color:#dc2626;background:linear-gradient(90deg,#fff7f7,#fff)}
+.rcAns .zh{font-size:34px;font-weight:800;line-height:1.25}.rcAns .zh.sm{font-size:24px}
+.rcAns .py{color:var(--muted);font-size:18px}.rcAns .en{color:#344054;margin-top:4px}
+.rcDiff{margin-top:10px;font-size:15px;line-height:1.9}.rcDiff .lbl{display:inline-block;min-width:74px;font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase}
+.rcDiff span.c{font-size:20px;font-weight:700;padding:0 1px}.c.ok{color:#15803d}.c.bad{color:#dc2626;text-decoration:underline wavy #dc2626}
+.rcOpts{display:flex;flex-direction:column;gap:6px;margin-top:16px;font-size:13px;color:var(--muted)}
+.rcPop{animation:rcPop .35s ease}@keyframes rcPop{0%{transform:scale(.98)}50%{transform:scale(1.015)}100%{transform:scale(1)}}
+.rcShake{animation:rcShake .3s}@keyframes rcShake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.rcMiss{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;margin:6px 0;background:#fff}
+@media(max-width:600px){.rcStats{grid-template-columns:1fr 1fr}.rcBig{font-size:46px}}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.charGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(45px,1fr));gap:8px}
+.charGrid span{display:flex;align-items:center;justify-content:center;padding:10px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;font-size:22px;font-weight:700}
+@media(max-width:600px){.grid2{grid-template-columns:1fr}}
+</style>
+</head><body>
+<header><h1>🇨🇳 HSK 1 Mastery Lab</h1><div class="sub">Built from your HSK 1 revision sheet — recall, production, grammar traps &amp; spaced repetition.</div>
+<div class="voiceBox">
+<b>🔊 Mandarin Voice Pack</b>
+<div class="small">Uses the best Mandarin voice available on your device/browser. Chinese answers are spoken in Mandarin; English prompts can use an English voice.</div>
+<div class="voiceGrid">
+<div><label for="zhVoice">Mandarin voice</label><select id="zhVoice"></select></div>
+<div><label for="enVoice">English voice</label><select id="enVoice"></select></div>
+</div>
+<div class="row">
+<label style="flex:1;min-width:170px"><input id="autoSpeak" type="checkbox" checked style="width:auto;margin-right:6px"> Auto-speak questions &amp; answers</label>
+<label style="flex:1;min-width:170px">Speed <input id="voiceRate" type="range" min="0.55" max="1.05" value="0.78" step="0.01"></label>
+<button class="speakBtn" onclick="testVoice()" type="button">🔊 Test Mandarin</button>
+</div>
+<div class="voiceStatus" id="voiceStatus">Loading Mandarin voices…</div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+  <span class="badge">🔥 Build your streak</span><span class="badge">⚡ Earn XP by answering</span><span class="badge">🎯 Master, don’t just memorise</span>
+</div>
+</header>
+<nav>
+<button class="tab active" onclick="show('home',this)" type="button">Dashboard</button>
+<button class="tab" onclick="show('cards',this)" type="button">Flashcards</button>
+<button class="tab" onclick="show('quiz',this)" type="button">Recall</button>
+<button class="tab" onclick="show('exam',this)" type="button">HSK Test</button>
+<button class="tab" onclick="show('realExam',this)" type="button">🎯 Real Exam</button>
+<button class="tab" onclick="show('hsk30',this)" type="button">🆕 HSK 3.0</button>
+<button class="tab" onclick="show('hsk2',this)" type="button">🆕 HSK 2</button>
+
+<button class="tab" onclick="show('topics',this)" type="button">🗺️ Topics</button>
+<button class="tab" onclick="show('grammar',this)" type="button">Grammar</button>
+<button class="tab" onclick="show('characters',this)" type="button">🀄 Characters</button>
+<button class="tab" onclick="show('words',this)" type="button">300 Words</button>
+</nav>
+<main>
+<section class="panel" id="home">
+<h2>Your HSK 1 → HSK 2 training system</h2><p><b>Goal: master the full HSK 3.0 Level 1 scope: 300 words + 246 recognition characters + grammar + exam skills.</b></p>
+<div class="grid">
+<div class="stat"><b id="mastered">0</b>words mastered</div>
+<div class="stat"><b id="seen">0</b>cards reviewed</div>
+<div class="stat"><b id="streak">0</b>session score</div>
+</div>
+<div class="grid" style="margin-top:14px"><div class="stat"><b>300</b> HSK 3.0 words</div><div class="stat"><b>246</b> recognition characters</div><div class="stat"><b>70</b> official grammar items</div></div>
+<h3>🗺️ Your HSK 3.0 Learning Path</h3>
+<div class="topicPath" id="homeTopicPath"></div>
+<div class="small" style="margin:8px 0 18px">30 practical Level-1 task units. Each unit combines vocabulary, grammar and communicative use.</div>
+<h3>How to use it</h3>
+<div class="rule"><b>1. Recall before reveal.</b> Never flip a card until you've tried to produce the answer.</div>
+<div class="rule"><b>2. English → Chinese.</b> This is your highest-value direction because it forces production.</div>
+<div class="rule"><b>3. Missed cards return.</b> Rate yourself Again / Hard / Good / Easy. Your browser stores progress locally.</div>
+<div class="rule"><b>4. Say everything aloud.</b> Characters + pinyin + meaning should become one memory.</div>
+<p class="small">The source sheet focuses on adjective sentences without 是, 这/那/哪 + measure words, 在 placement, measure words, and 认识/知道/看/看见/觉得.</p>
+<div class="row">
+<button class="primary" onclick="show('cards',document.querySelectorAll('.tab')[1])" type="button">Start training →</button>
+<button onclick="resetProgress()" type="button">Reset progress</button>
+</div>
+</section>
+<section class="panel hidden" id="cards">
+<div class="score">Reviewed: <span id="cardCount">0</span></div>
+<div class="rcMeta"><span class="small" id="cardQueueInfo"></span><span class="small" id="cardPos"></span></div>
+<div class="rcBar"><div class="rcFill" id="cardProgFill" style="width:0%"></div></div>
+<div class="big" id="cardZh">医生</div><div class="pinyin" id="cardPy"></div><div class="row"><button class="speakBtn" onclick="speakZh(document.getElementById('cardZh').textContent)" type="button">🔊 Hear word</button></div>
+<div class="meaning hidden" id="cardEn"></div>
+<div class="row"><button onclick="reveal()" type="button" class="primary" id="revealBtn">Reveal <span class="kbd">space</span></button></div>
+<div class="row hidden" id="ratings">
+<button id="rate0" onclick="rate(0)" type="button">Again</button><button id="rate1" onclick="rate(1)" type="button">Hard</button><button id="rate2" onclick="rate(2)" type="button">Good</button><button id="rate3" onclick="rate(3)" type="button">Easy</button>
+</div>
+<div class="row"><button class="hidden" id="nextCardBtn" onclick="skipCard()" type="button">Skip without rating →</button></div>
+<p class="small" id="cardHint"></p>
+</section>
+<section class="panel hidden" id="quiz">
+<div class="rcTop"><div><h2 style="margin:0">Recall lab</h2><div class="small">Pull it from memory before you look. <span class="kbd">Enter</span> check · <span class="kbd">Enter</span> again for next · <span class="kbd">Tab</span> hint</div></div><div class="score">Score: <span id="quizScore">0</span></div></div>
+<div class="rcModes" id="rcModes"></div>
+<div class="rcStats">
+<div class="rcStat"><b id="rcStreak">0</b><span>🔥 streak</span></div>
+<div class="rcStat"><b id="rcAcc">–</b><span>round accuracy</span></div>
+<div class="rcStat"><b id="rcBest">0</b><span>best streak</span></div>
+<div class="rcStat"><b id="rcWeak">0</b><span>weak spots</span></div>
+</div>
+<div class="rcBar"><div class="rcFill" id="rcFill" style="width:0%"></div></div>
+<div class="small" id="rcRound" style="margin:6px 0 0"></div>
+<div id="rcCard">
+<div class="rcLabel" id="rcLabel"></div>
+<div class="prompt" id="qPrompt"></div>
+<div class="rcHint" id="rcHint"></div>
+<textarea id="answer" rows="2" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type your answer from memory…"></textarea>
+<div class="row" id="rcActions"><button class="primary" id="rcCheckBtn" onclick="checkQ()" type="button">Check</button><button onclick="rcHint()" id="rcHintBtn" type="button">💡 Hint</button><button onclick="rcGiveUp()" id="rcGiveBtn" type="button">👁 Show answer</button></div>
+<div class="feedback" id="qFeedback"></div>
+<div class="hidden" id="qAnswer"></div>
+<div class="row hidden" id="rcNextRow"><button class="primary" onclick="nextQ()" type="button" id="rcNextBtn">Next →</button></div>
+</div>
+<div class="hidden" id="rcSummary"></div>
+<div class="rcOpts"><label><input type="checkbox" id="rcAuto" checked style="width:auto;margin-right:6px"> Auto-advance after a clean correct answer</label><label><input type="checkbox" id="rcStrict" style="width:auto;margin-right:6px"> Strict tones when typing pinyin</label></div>
+</section>
+<section class="panel hidden" id="exam">
+<div class="score"><span id="examProgress">Question 1 / 30</span> · Score: <span id="examScore">0</span> / 30</div>
+<h2>HSK 1 Mock Test</h2>
+<p class="small">30 questions per mock: recognition, sentence completion, mini-dialogues and English → Chinese production. 24/30 = pass.</p>
+<div class="prompt" id="examPrompt"></div>
+<div id="examArea"></div>
+<div class="row"><button class="speakBtn" onclick="speakCurrentExamAnswer()" type="button">🔊 Hear answer</button></div><div class="feedback" id="examFeedback"></div>
+<div class="row"><button class="primary hidden" id="examNext" onclick="nextExam()" type="button">Next question →</button></div>
+<div class="row"><button class="hidden" id="newExam" onclick="buildExam()" type="button">Start a fresh 30-question mock</button></div>
+</section>
+
+<section class="panel hidden" id="realExam">
+  <div class="score"><span id="realProgress">Not started</span> · <span id="realTimer">40:00</span></div>
+  <h2>🎯 Real HSK 1 Exam Simulation</h2>
+  <p class="small">Built from the published HSK 1 paper structure: 40 questions — 20 Listening + 20 Reading, four parts of five questions each. Each question is worth 5 points; 120/200 is the published pass mark.</p>
+  <div id="realIntro" class="notice">
+    <b>Exam conditions</b>
+    <ul>
+      <li>40 questions · 200 points</li>
+      <li>Listening: 20 questions. Each audio item is played up to twice.</li>
+      <li>Reading: 20 questions. Pinyin is shown, as on the classic HSK 1 paper.</li>
+      <li>No instant answers or corrections during the exam.</li>
+      <li>When you finish, you get a detailed diagnostic by section and question type.</li>
+    </ul>
+    <p class="small"><b>Important:</b> this is an original simulation modelled on the published HSK 1 format, not a copied past paper. It is a readiness check, not an official result.</p>
+    <button class="primary" id="realStart" type="button" onclick="startRealExam()">Start Real Exam →</button>
+  </div>
+  <div id="realExamBody" class="hidden">
+    <div class="examMeta" id="realPartLabel"></div>
+    <div class="prompt" id="realPrompt"></div>
+    <div id="realVisual" class="pictureChoices"></div>
+    <div id="realOptions" class="examOptions"></div>
+    <div id="realAudioControls" class="row hidden">
+      <button class="speakBtn" id="realPlay" type="button" onclick="playRealAudio()">🔊 Play audio (2 plays)</button>
+      <span class="small" id="realPlayCount"></span>
+    </div>
+    <div class="row" style="justify-content:space-between;margin-top:18px">
+      <button type="button" id="realPrev" onclick="realPrev()">← Previous</button>
+      <button class="primary" type="button" id="realNext" onclick="realNext()">Next →</button>
+    </div>
+  </div>
+  <div id="realResults" class="hidden"></div>
+</section>
+
+
+<section class="panel hidden" id="hsk30">
+  <div class="score"><span id="h30Progress">Not started</span> · <span id="h30Timer">40:00</span></div>
+  <h2>🆕 HSK 3.0 Level 1 Readiness Test</h2>
+<div class="good" style="margin:10px 0"><b>Verified scope:</b> 300 Level-1 vocabulary items, 246 recognition characters, and the Level-1 grammar inventory. This app uses original questions rather than reproducing official papers.</div>
+  <p class="small">A separate HSK 3.0-style Level 1 simulation. It keeps the published 20 Listening + 20 Reading structure, but uses the revised question styles from the new sample materials. No writing section at Level 1.</p>
+  <div id="h30Intro" class="notice">
+    <b>Exam conditions</b>
+    <ul>
+      <li>40 questions · 200 points</li>
+      <li>20 Listening + 20 Reading</li>
+      <li>40-minute timer</li>
+      <li>Listening audio is limited to two plays per question</li>
+      <li>No pinyin is shown during Listening</li>
+      <li>No corrections are revealed until submission</li>
+    </ul>
+    <p class="small"><b>What makes this different?</b> HSK 3.0 Level 1 expands the Level 1 syllabus and changes some task formats. For example, the revised Listening includes question→answer selection, and Reading replaces the old picture true/false format with comprehension-style questions.</p>
+    <p class="small"><b>Important:</b> this is an original readiness simulation based on the official HSK 3.0 structure/sample descriptions, not an official paper and not a guarantee of an official result. CTI describes the new HSK as covering tasks, topics, vocabulary, grammar and Chinese characters.</p>
+    <button class="primary" type="button" onclick="startH30Exam()">Start HSK 3.0 Test →</button>
+  </div>
+  <div id="h30Body" class="hidden">
+    <div class="examMeta" id="h30PartLabel"></div>
+    <div class="prompt" id="h30Prompt"></div>
+    <div id="h30Visual" class="pictureChoices"></div>
+    <div id="h30Options" class="examOptions"></div>
+    <div id="h30AudioControls" class="row hidden"><button class="speakBtn" id="h30Play" type="button" onclick="playH30Audio()">🔊 Play audio (2 plays)</button><span class="small" id="h30PlayCount"></span></div>
+    <div class="row" style="justify-content:space-between;margin-top:18px"><button type="button" id="h30Prev" onclick="h30Prev()">← Previous</button><button class="primary" type="button" id="h30Next" onclick="h30Next()">Next →</button></div>
+  </div>
+  <div id="h30Results" class="hidden"></div>
+</section>
+<section class="panel hidden" id="hsk2"><div class="sectionHead"><div><h2>🚀 HSK 2 — New Level 2 Path</h2><p class="small">200 new syllabus entries + cumulative 500-word target + 125 new recognition characters.</p></div></div><div class="grid"><div class="stat"><b>200</b> new words</div><div class="stat"><b>500</b> cumulative words</div><div class="stat"><b>125</b> new characters</div><div class="stat"><b>57</b> grammar drills</div></div><div class="rule"><b>Best route from HSK 1:</b> learn the 200 new Level-2 entries first, while keeping the 300 Level-1 bank in spaced review. HSK 2 is cumulative.</div><div class="grid2" style="margin-top:14px"><div class="card"><h3>🀄 New vocabulary</h3><p>Search and practise all 200 Level-2 entries. Pinyin, meaning and speech are included.</p><input id="h2Search" placeholder="Search Chinese, pinyin or English" oninput="renderH2Words()"><div id="h2WordList" style="margin-top:12px"></div></div><div class="card"><h3>📐 Grammar</h3><p>57 focused Level-2 grammar drills, including 比, 过, 着, complements, connectors and direction.</p><button class="primary" onclick="startH2Grammar()" type="button">Start grammar drill →</button><div id="h2GrammarCard" style="margin-top:14px"></div></div></div><div class="card" style="margin-top:14px"><h3>🀄 Recognition characters</h3><p>125 characters introduced at Level 2. HSK 2 cumulative recognition target: 371.</p><div class="charGrid" id="h2CharGrid"></div></div><div class="card" style="margin-top:14px"><h3>🎯 HSK 2 readiness</h3><p>Official HSK Level 2 is currently listed by CTI as 60 questions: 35 listening + 25 reading, with a 200-point maximum and 120 passing threshold. Use this as a separate diagnostic once your Level-2 bank is reasonably familiar.</p><button class="primary" onclick="startH2Mock()" type="button">Start HSK 2 diagnostic →</button><div id="h2Mock" style="margin-top:14px"></div></div></section>
+<section class="panel hidden" id="topics">
+<h2>🗺️ HSK 3.0 Level 1 — Task & Topic Path</h2>
+<div class="small" style="margin:8px 0 14px">The official HSK 3.0 framework is organised around tasks, topics, vocabulary, grammar and characters. These 30 units are the app's learning-path organisation of that scope, designed to turn the syllabus into practical study missions.</div>
+<div class="row"><input id="topicSearch" oninput="renderTopics()" placeholder="Search topics, Chinese or English..." style="flex:1"/><button type="button" onclick="startTopic(0)">▶ Start path</button></div>
+<div class="grid" id="topicGrid" style="margin-top:15px"></div>
+<div id="topicPractice" class="rule hidden" style="margin-top:18px"></div>
+</section>
+<section class="panel hidden" id="grammar">
+<h2>📐 HSK 3.0 Level 1 — Mastery Grammar Bank</h2>
+<div class="small" style="margin:8px 0 14px">Built around the current Level 1 grammar inventory, with extra drill rules where splitting one syllabus item improves mastery.</div>
+<p class="small">A large Level 1 grammar reference with patterns, examples, pinyin-ready Chinese, and common traps. The bank is deliberately broader than the tiny starter deck: use it to learn, then drill the weak points.</p>
+<div class="row"><input id="grammarSearch" oninput="renderGrammarBank()" placeholder="Search grammar, pattern or Chinese..." style="flex:1"/><button type="button" onclick="randomGrammarQuiz()">🎯 Random grammar quiz</button></div>
+<div id="grammarQuiz" class="rule hidden"></div>
+<div class="grid" id="grammarGrid" style="margin-top:15px"></div>
+</section>
+<section class="panel hidden" id="characters">
+<h2>🀄 HSK 3.0 Level 1 — 246 Recognition Characters</h2>
+<p class="small">The current Level 1 character inventory contains 246 recognition characters. This section tests recognition in context rather than pretending the written HSK 1 paper has a character-writing section.</p>
+<div class="score">Character quiz: <span id="charScore">0</span></div>
+<div class="rule" id="charQuiz"><div class="big" id="charTarget">爱</div><p class="small" id="charHint">Which word below contains this character?</p><div class="examOptions" id="charOptions"></div><div class="feedback" id="charFeedback"></div></div>
+<div class="row"><button class="primary" type="button" onclick="nextCharQuiz()">Next character →</button><button type="button" onclick="renderCharacters()">Browse all 246</button></div>
+<div id="charGrid" class="grid hidden" style="margin-top:15px"></div>
+</section>
+<section class="panel hidden" id="words">
+<h2>300-word HSK 3.0 Level 1 vocabulary bank</h2><input id="search" oninput="renderWords()" placeholder="Search Chinese, pinyin or English..."/>
+<div class="grid" id="wordGrid" style="margin-top:15px"></div>
+</section>
+</main>
+<script>
+const hsk2Vocab=[
+["啊","a","sentence-final particle; ah","particle"],["爱好","àihào","hobby; to like","verb/noun"],["白色","báisè","white","noun"],["班","bān","class; shift","noun"],["帮","bāng","to help","verb"],["帮忙","bāngmáng","to help; lend a hand","verb"],["包","bāo","bag; to wrap","noun/verb"],["本子","běnzi","notebook","noun"],["比","bǐ","than; to compare","prep/verb"],["笔","bǐ","pen; writing implement","noun"],["别","bié","don't; other","adverb"],["不错","búcuò","not bad; quite good","adjective"],["不好意思","bù hǎoyìsi","sorry; embarrassed; excuse me","phrase"],["长","cháng","long; to grow","adjective/verb"],["车站","chēzhàn","station; stop","noun"],["出","chū","to go out; come out","verb"],["出国","chūguó","to go abroad","verb"],["出来","chūlái","to come out","verb"],["出门","chūmén","to go out; leave home","verb"],["出去","chūqù","to go out","verb"],["床","chuáng","bed","noun"],["词","cí","word","noun"],["次","cì","time; occurrence","measure word"],["从","cóng","from","preposition"],["从小","cóngxiǎo","from childhood","phrase"],["错","cuò","wrong; mistake","adjective/noun"],["打","dǎ","to hit; make a call","verb"],["打车","dǎchē","to take a taxi","verb"],["打开","dǎkāi","to open; switch on","verb"],["但","dàn","but","conjunction"],["但是","dànshì","but; however","conjunction"],["得","de","must; have to","particle/modal"],["地","de","adverbial particle","particle"],["等","děng","to wait","verb"],["地铁","dìtiě","subway; metro","noun"],["点","diǎn","o'clock; point","noun"],["懂","dǒng","to understand","verb"],["动","dòng","to move; touch","verb"],["饭馆","fànguǎn","restaurant","noun"],["飞","fēi","to fly","verb"],["高","gāo","tall; high","adjective"],["高中","gāozhōng","senior high school","noun"],["告诉","gàosu","to tell; inform","verb"],["个子","gèzi","height; build","noun"],["跟","gēn","with; follow","preposition/verb"],["公交车","gōngjiāochē","bus","noun"],["过","guò","to pass; experience","verb/particle"],["过","guo","experienced-action particle","particle"],["过来","guòlái","to come over","verb"],["过年","guònián","to celebrate New Year","verb"],["过去","guòqù","the past; to pass by","noun/verb"],["过","guo","experienced-action particle (alternate syllabus entry)","particle"],["还是","háishi","or; still; after all","conjunction/adverb"],["黑色","hēisè","black","noun"],["红茶","hóngchá","black tea","noun"],["红色","hóngsè","red","noun"],["后面","hòumiàn","behind; at the back","noun"],["花","huā","flower; to spend","noun/verb"],["画","huà","to draw; picture","verb/noun"],["坏","huài","bad; broken","adjective"],["回来","huílái","to come back","verb"],["回去","huíqù","to go back","verb"],["机场","jīchǎng","airport","noun"],["机票","jīpiào","plane ticket","noun"],["记得","jìde","to remember","verb"],["间","jiān","measure word for rooms","measure word"],["教","jiāo","to teach","verb"],["教室","jiàoshì","classroom","noun"],["介绍","jièshào","to introduce; present","verb"],["进","jìn","to enter; go in","verb"],["近","jìn","near; close","adjective"],["进来","jìnlái","to come in","verb"],["进去","jìnqù","to go in","verb"],["经常","jīngcháng","often; regularly","adverb"],["酒店","jiǔdiàn","hotel; restaurant","noun"],["就","jiù","then; exactly; just","adverb"],["咖啡","kāfēi","coffee","noun"],["开始","kāishǐ","to begin; start","verb"],["开学","kāixué","to start school term","verb"],["考","kǎo","to take/test an exam","verb"],["考试","kǎoshì","exam; to take an exam","noun/verb"],["可能","kěnéng","maybe; possible","adverb/adjective"],["裤子","kùzi","trousers","noun"],["快","kuài","fast; soon","adjective/adverb"],["快乐","kuàilè","happy","adjective"],["快要","kuàiyào","about to; soon","adverb"],["篮球","lánqiú","basketball","noun"],["累","lèi","tired","adjective"],["离","lí","from; away from","preposition"],["里面","lǐmiàn","inside","noun"],["楼","lóu","building; floor","noun"],["路","lù","road; route","noun"],["路上","lùshang","on the road; on the way","noun"],["旅游","lǚyóu","to travel; trip","verb/noun"],["绿茶","lǜchá","green tea","noun"],["绿色","lǜsè","green","noun"],["慢","màn","slow","adjective"],["没意思","méi yìsi","boring; pointless","adjective"],["每","měi","each; every","determiner"],["门","mén","door; gate","noun"],["门口","ménkǒu","doorway; entrance","noun"],["门票","ménpiào","entrance ticket","noun"],["面","miàn","side; face; noodles","noun"],["名","míng","name; measure word for people","noun/measure word"],["拿","ná","to take; hold","verb"],["那么","nàme","so; in that case","adverb"],["那样","nàyàng","that kind; like that","pronoun/adverb"],["奶茶","nǎichá","milk tea","noun"],["奶奶","nǎinai","paternal grandmother","noun"],["男孩儿","nánháir","boy","noun"],["鸟","niǎo","bird","noun"],["女孩儿","nǚháir","girl","noun"],["旁边","pángbiān","beside; next to","noun"],["跑","pǎo","to run","verb"],["跑步","pǎobù","to run; jog","verb"],["票","piào","ticket","noun"],["妻子","qīzi","wife","noun"],["起来","qǐlái","to get up; stand up","verb"],["前面","qiánmiàn","in front; ahead","noun"],["晴","qíng","clear; fine weather","adjective"],["球","qiú","ball","noun"],["让","ràng","to let; make","verb"],["肉","ròu","meat","noun"],["商场","shāngchǎng","shopping centre; mall","noun"],["上来","shànglái","to come up","verb"],["上面","shàngmiàn","above; on top","noun"],["上去","shàngqù","to go up","verb"],["上网","shàngwǎng","to go online","verb"],["身体","shēntǐ","body; health","noun"],["生日","shēngrì","birthday","noun"],["时","shí","time; hour","noun"],["事情","shìqing","matter; affair","noun"],["手","shǒu","hand","noun"],["手表","shǒubiǎo","wristwatch","noun"],["书包","shūbāo","schoolbag","noun"],["舒服","shūfu","comfortable; feel well","adjective"],["送","sòng","to send; give; see off","verb"],["虽然","suīrán","although; even though","conjunction"],["所以","suǒyǐ","so; therefore","conjunction"],["疼","téng","to hurt; sore","verb/adjective"],["踢","tī","to kick; play (football)","verb"],["题","tí","question; problem","noun"],["条","tiáo","measure word for long thin things","measure word"],["跳舞","tiàowǔ","to dance","verb"],["头","tóu","head","noun"],["外国","wàiguó","foreign country","noun"],["外面","wàimiàn","outside","noun"],["完","wán","to finish; complete","verb"],["万","wàn","ten thousand","number"],["往","wǎng","towards; to go to","preposition/verb"],["网上","wǎngshang","online; on the internet","noun"],["忘","wàng","to forget","verb"],["位","wèi","polite measure word for people","measure word"],["为什么","wèishénme","why","question word"],["希望","xīwàng","to hope","verb"],["洗","xǐ","to wash","verb"],["洗手间","xǐshǒujiān","toilet; washroom","noun"],["下来","xiàlái","to come down","verb"],["下面","xiàmiàn","below; following","noun"],["下去","xiàqù","to go down","verb"],["小孩儿","xiǎoháir","child","noun"],["小时候","xiǎoshíhou","in childhood","noun"],["笑","xiào","to laugh; smile","verb"],["姓","xìng","surname; be surnamed","noun/verb"],["姓名","xìngmíng","full name","noun"],["颜色","yánsè","colour","noun"],["眼睛","yǎnjing","eyes","noun"],["药","yào","medicine","noun"],["药店","yàodiàn","pharmacy","noun"],["爷爷","yéye","paternal grandfather","noun"],["一会儿","yíhuìr","a moment; in a while","noun"],["已经","yǐjīng","already","adverb"],["一起","yìqǐ","together","adverb"],["意思","yìsi","meaning","noun"],["阴","yīn","overcast","adjective"],["因为","yīnwèi","because","conjunction"],["游","yóu","to swim","verb"],["游泳","yóuyǒng","to swim","verb"],["有意思","yǒu yìsi","interesting; fun","adjective"],["有时","yǒushí","sometimes","adverb"],["右","yòu","right side","noun"],["右边","yòubian","right-hand side","noun"],["鱼","yú","fish","noun"],["远","yuǎn","far; distant","adjective"],["运动","yùndòng","sport; exercise","noun/verb"],["站","zhàn","to stand; station","verb/noun"],["丈夫","zhàngfu","husband","noun"],["这么","zhème","so; this","adverb"],["这样","zhèyàng","like this; such","pronoun/adverb"],["着","zhe","ongoing state marker","particle"],["正","zhèng","just; upright; principal","adverb/adjective"],["周","zhōu","week","noun"],["准备","zhǔnbèi","to prepare","verb"],["自己","zìjǐ","oneself; self","pronoun"],["走","zǒu","to walk; leave","verb"],["走路","zǒulù","to walk; go on foot","verb"],["足球","zúqiú","football; soccer","noun"],["最","zuì","most; -est","adverb"],["左","zuǒ","left side","noun"],["左边","zuǒbian","left-hand side","noun"]];
+const hsk2Chars=`啊 帮 备 比 笔 表 别 步 场 词 次 从 错 但 地 等 店 懂 动 啡 夫 告 跟 馆 过 黑 红 花 画 坏 己 记 交 教 介 进 近 经 睛 酒 就 咖 考 裤 快 篮 乐 累 离 留 楼 路 旅 绿 慢 每 门 拿 鸟 旁 跑 票 妻 情 晴 球 然 让 肉 色 绍 身 始 试 室 舒 思 送 诉 虽 所 疼 踢 体 跳 铁 头 完 万 网 往 忘 望 为 位 舞 希 洗 笑 姓 颜 眼 药 爷 已 意 因 阴 泳 游 右 鱼 远 运 站 长 丈 周 着 准 自 走 足 最 左`.split(' ');
+const hsk2Grammar=[
+["比 comparison","A + 比 + B + adjective","Compare two things.","我比他高。","Avoid 很/非常 directly before the adjective in a basic 比 sentence."],["比 + quantity","A + 比 + B + Adj + quantity","State the size of a difference.","我比妹妹大三岁。","The quantity comes after the adjective."],["更/还 + adjective","A + 更/还 + adjective","Make a comparison stronger.","今天比昨天更冷。","Use 更/还 to intensify a comparison."],["一点儿 after adjective","Adj + 一点儿","Make a small difference.","这个便宜一点儿。","一点儿 follows the adjective."],["得 complement","V + 得 + adjective","Describe degree or manner.","他说得很好。","得 follows the verb; 的 does not."],["过 experience","V + 过 + object","Say something has been experienced before.","我去过北京。","过 marks past experience, not simply completion."],["着 state","V + 着 + object","Describe an ongoing state.","门开着。","着 focuses on the continuing state."],["是……的 focus","是 + focus + V + 的","Highlight when/how/where an action happened.","我是坐飞机来的。","It focuses on details of a completed event."],["因为……所以……","因为 + reason，所以 + result","Connect cause and result.","因为下雨，所以我没出去。","Both halves should match logically."],["虽然……但是……","虽然 + concession，但是 + result","Connect contrast.","虽然很累，但是我很开心。","但是 introduces the contrasting result."],["还是 in questions","A 还是 B？","Ask an either/or question.","你喝茶还是咖啡？","Use 还是, not 或者, for questions."],["或者 in statements","A 或者 B","Give alternatives in a statement.","我喝茶或者咖啡。","或者 is normally for statements."],["就 then","Condition + 就 + result","Express a quick/expected consequence.","你到了我就走。","就 often links a condition to its result."],["才 only then","Time/condition + 才 + verb","Express lateness or a condition being met.","他十点才回来。","才 often implies later than expected."],["快要……了","快要 + event + 了","Say something is about to happen.","火车快要到了。","了 marks the approaching change."],["已经……了","已经 + verb + 了","Say something has already happened.","我已经吃饭了。","已经 usually pairs naturally with 了."],["正在 + action","正在 + V","Emphasise an action in progress.","我正在学习。","正在 is stronger than a simple present description."],["在 + action","在 + V","Describe an action currently happening.","我在看书。","在 before the verb marks progress."],["再 + verb","再 + V","Do something again later.","明天再来。","再 is normally for a future/repeated action."],["又 + verb","又 + V","Repeat an action in the past/present context.","他昨天又来了。","又 often refers to a repeated event."],["每 + classifier + noun","每 + MW + noun","Express each/every.","我每天学习。","Everyday expressions often omit the noun after the classifier."],["从……到……","从 A 到 B","Express a range.","从北京到上海。","Use 从 for the starting point and 到 for the endpoint."],["离 + distance","A 离 B + distance","State distance from a place.","我家离学校很近。","离 introduces the reference point."],["跟 + person","跟 + person + V","Do something with someone.","我跟朋友一起去。","跟 can mean with."],["给 + recipient","给 + person + object","Give something to someone.","我给他一本书。","Recipient normally comes after 给."],["送 + recipient","送 + person + object","Give/send something to someone.","我送她一杯茶。","送 can mean give as a present or see someone off."],["让 + person + V","让 + person + V","Let or make someone do something.","妈妈让我学习。","The person affected follows 让."],["告诉 + person + information","告诉 + person + clause","Tell someone something.","我告诉他这个消息。","Person comes before the information."],["拿 + object","拿 + object","Take/hold something.","请拿这个。","拿 focuses on taking/holding."],["把-style object handling (intro)","把 + object + V + result/location","Use the object as the focus of an action.","把书放在桌子上。","Treat this as an introduction; more complex 把 belongs later."],["direction 来","V + 来","Movement toward speaker/reference point.","他走过来。","来 indicates movement toward the reference point."],["direction 去","V + 去","Movement away from speaker/reference point.","他走过去。","去 indicates movement away from the reference point."],["来/去 after place","V + place + 来/去","Combine action and direction.","走进来。","The directional complement follows the verb."],["起来","V + 起来","Start/raise upward movement or change of state.","站起来。","Common with movement verbs."],["下来","V + 下来","Move down/toward the lower point.","走下来。","下来 indicates movement down/toward the reference point."],["上来","V + 上来","Move upward/toward the reference point.","走上来。","上来 combines upward movement with 来."],["上去","V + 上去","Move upward/away.","走上去。","上去 combines upward movement with 去."],["下去","V + 下去","Move downward/away.","走下去。","下去 combines downward movement with 去."],["前面/后面","place + 前面/后面","Describe front/back location.","学校前面有商店。","方位词 can follow a place noun."],["里面/外面","place + 里面/外面","Describe inside/outside.","商店里面很大。","These are location nouns."],["上面/下面","place + 上面/下面","Describe above/below.","桌子上面有一本书。","Use a location noun after the reference object."],["旁边","place + 旁边","Describe beside.","学校旁边有商店。","旁边 can act as a location noun."],["一会儿","V + 一会儿","Do something for a short while.","等我一会儿。","A duration phrase can follow the verb."],["一起","一起 + V","Do something together.","我们一起学习。","一起 describes shared action."],["自己","subject + 自己","Refer to oneself.","我自己做。","自己 can emphasise the doer."],["有时候/有时","有时 + clause","Say sometimes.","我有时坐地铁。","Place the frequency phrase before the main verb."],["经常","经常 + V","Say often/regularly.","我经常跑步。","Frequency adverbs usually precede the verb."],["可能","可能 + clause","Express possibility.","明天可能下雨。","可能 can be an adverb or adjective."],["快要……了","快要 + V + 了","Say an event is imminent.","飞机快要到了。","Do not treat 快要 as a past marker."],["不要 / 别","不要/别 + V","Tell someone not to do something.","别说话。","别 is a common conversational prohibition."],["必须/得","subject + 得 + V","Express necessity.","我得走了。","Here 得 is pronounced děi."],["可以","可以 + V","Express permission/possibility.","我可以进去吗？","可以 is also used for permission."],["会","会 + V","Express learned ability or likely future event.","我会游泳。","会 can mean can/know how to."],["能","能 + V","Express ability or possibility.","今天我不能去。","能 is often constrained by circumstances."],["有意思/没意思","有意思 / 没意思","Describe whether something is interesting.","这个电影很有意思。","没意思 means boring/uninteresting."],["真 + adjective","真 + Adj","Emphasise a quality.","今天真冷。","真 is an adverb of emphasis."],["最 + adjective","最 + Adj","Express the superlative.","这是最好的。","最 marks the highest degree."],["这么/那么","这么/那么 + Adj","Say this/that degree.","这么贵！","这么 is closer to the speaker; 那么 is more remote/contextual."],["这样/那样","这样/那样 + clause","Refer to a manner or state.","不要这样说。","这样 means like this; 那样 means like that."]];
+const vocab=[["爱","ài","love; like","verb"],["八","bā","eight","number"],["爸爸","bàba","dad; father","noun"],["吧","ba","suggestion / surmise particle","particle"],["白天","báitiān","daytime","noun"],["百","bǎi","hundred","number"],["半","bàn","half","number"],["包子","bāozi","steamed bun","noun"],["杯子","bēizi","cup; glass","noun"],["本","běn","measure word for books","MW"],["边","biān","side; edge","noun"],["病","bìng","illness; sick","noun"],["不","bù","not; no","adverb"],["不客气","bú kèqi","you're welcome","phrase"],["不要","bú yào","don't; do not want","verb/adverb"],["菜","cài","vegetable; dish","noun"],["茶","chá","tea","noun"],["唱","chàng","sing","verb"],["超市","chāoshì","supermarket","noun"],["车","chē","car; vehicle","noun"],["吃","chī","eat","verb"],["出租车","chūzūchē","taxi","noun"],["穿","chuān","wear; put on","verb"],["打电话","dǎ diànhuà","make a phone call","verb"],["大","dà","big; large","adjective"],["大家","dàjiā","everyone","pronoun"],["大学","dàxué","university; college","noun"],["大学生","dàxuéshēng","university student","noun"],["到","dào","arrive; reach","verb"],["的","de","possessive/attributive particle","particle"],["第","dì","ordinal-number prefix","prefix"],["弟弟","dìdi","younger brother","noun"],["点","diǎn","o'clock; point; a little","MW"],["店","diàn","shop; store","noun"],["电话","diànhuà","telephone; phone","noun"],["电脑","diànnǎo","computer","noun"],["电视","diànshì","television; TV","noun"],["电影","diànyǐng","movie; film","noun"],["电影院","diànyǐngyuàn","cinema","noun"],["东西","dōngxi","thing; stuff","noun"],["都","dōu","all; both","adverb"],["读","dú","read; study","verb"],["读书","dúshū","read; study","verb"],["对","duì","correct; right; towards","adjective/preposition"],["对不起","duìbuqǐ","sorry","phrase"],["多","duō","many; much; more","adjective"],["多少","duōshao","how many; how much","question"],["儿子","érzi","son","noun"],["二","èr","two","number"],["饭","fàn","meal; cooked rice","noun"],["饭店","fàndiàn","restaurant; hotel","noun"],["房间","fángjiān","room","noun"],["非常","fēicháng","very; extremely","adverb"],["飞机","fēijī","airplane","noun"],["分","fēn","minute; divide","MW/verb"],["分钟","fēnzhōng","minute","MW"],["高兴","gāoxìng","happy; glad","adjective"],["歌","gē","song","noun"],["哥哥","gēge","older brother","noun"],["个","gè","general measure word","MW"],["给","gěi","give; for","verb/preposition"],["公司","gōngsī","company","noun"],["工作","gōngzuò","work; job","verb/noun"],["狗","gǒu","dog","noun"],["贵","guì","expensive","adjective"],["国","guó","country; nation","noun"],["还","hái","still; also","adverb"],["孩子","háizi","child","noun"],["汉语","Hànyǔ","Chinese language","noun"],["汉字","Hànzì","Chinese character","noun"],["好","hǎo","good; fine","adjective"],["好吃","hǎochī","delicious","adjective"],["好看","hǎokàn","good-looking; nice","adjective"],["好听","hǎotīng","pleasant to hear","adjective"],["好玩儿","hǎowánr","fun; interesting","adjective"],["号","hào","number; day of month","noun"],["喝","hē","drink","verb"],["和","hé","and; with","preposition/conjunction"],["很","hěn","very","adverb"],["后","hòu","after; behind","noun"],["回","huí","return","verb"],["会","huì","can; know how to","modal"],["火车","huǒchē","train","noun"],["鸡蛋","jīdàn","egg","noun"],["几","jǐ","how many; several","question"],["家","jiā","family; home","noun"],["家人","jiārén","family members","noun"],["见","jiàn","see; meet","verb"],["件","jiàn","measure word for items/clothes","MW"],["饺子","jiǎozi","dumpling","noun"],["叫","jiào","be called; call","verb"],["姐姐","jiějie","older sister","noun"],["今年","jīnnián","this year","time"],["今天","jīntiān","today","time"],["九","jiǔ","nine","number"],["觉得","juéde","feel; think","verb"],["开","kāi","open; drive","verb"],["开车","kāichē","drive","verb"],["看","kàn","look; watch; read","verb"],["看病","kànbìng","see a doctor","verb"],["看见","kànjiàn","see; catch sight of","verb"],["可以","kěyǐ","can; may; okay","modal"],["课","kè","class; lesson","noun"],["口","kǒu","mouth; measure word for people","MW"],["块","kuài","piece; yuan","MW"],["来","lái","come","verb"],["老师","lǎoshī","teacher","noun"],["了","le","completed action / changed state","particle"],["冷","lěng","cold","adjective"],["里","lǐ","inside; in","localizer"],["两","liǎng","two","number"],["零","líng","zero","number"],["六","liù","six","number"],["妈妈","māma","mum; mother","noun"],["吗","ma","yes/no question particle","particle"],["买","mǎi","buy","verb"],["卖","mài","sell","verb"],["忙","máng","busy","adjective"],["猫","māo","cat","noun"],["没关系","méi guānxi","it doesn't matter","phrase"],["没事","méishì","it's fine; no problem","phrase"],["没有","méiyǒu","not have; there is no","verb/negation"],["妹妹","mèimei","younger sister","noun"],["们","men","plural suffix for people","suffix"],["米饭","mǐfàn","cooked rice","noun"],["面包","miànbāo","bread","noun"],["面条儿","miàntiáor","noodles","noun"],["明年","míngnián","next year","time"],["明天","míngtiān","tomorrow","time"],["名字","míngzi","name","noun"],["哪","nǎ","which","question"],["哪个","nǎge","which one","question"],["哪里","nǎlǐ","where","question"],["哪儿","nǎr","where","question"],["哪些","nǎxiē","which ones","question"],["那","nà","that","pronoun"],["那边","nàbiān","over there; that side","pronoun"],["那个","nàge","that one","pronoun"],["那里","nàlǐ","there","pronoun"],["那儿","nàr","there","pronoun"],["那些","nàxiē","those","pronoun"],["男","nán","male; man","adjective/noun"],["男朋友","nánpéngyou","boyfriend","noun"],["呢","ne","how about; topic/question particle","particle"],["能","néng","can; be able to","modal"],["你","nǐ","you","pronoun"],["你好","nǐ hǎo","hello","phrase"],["你们","nǐmen","you plural","pronoun"],["年","nián","year","noun"],["您","nín","you (polite)","pronoun"],["牛奶","niúnǎi","milk","noun"],["女","nǚ","female; woman","adjective/noun"],["女儿","nǚ'ér","daughter","noun"],["女朋友","nǚpéngyou","girlfriend","noun"],["女士","nǚshì","lady; Ms.","noun"],["朋友","péngyou","friend","noun"],["便宜","piányi","cheap","adjective"],["漂亮","piàoliang","pretty; beautiful","adjective"],["苹果","píngguǒ","apple","noun"],["七","qī","seven","number"],["起床","qǐchuáng","get up","verb"],["千","qiān","thousand","number"],["前","qián","front; before","noun/localizer"],["钱","qián","money","noun"],["请","qǐng","please; invite","verb"],["请问","qǐngwèn","may I ask","verb"],["去","qù","go","verb"],["去年","qùnián","last year","time"],["热","rè","hot","adjective"],["人","rén","person; people","noun"],["认识","rènshi","know a person","verb"],["日","rì","day; sun","MW/noun"],["三","sān","three","number"],["商店","shāngdiàn","shop; store","noun"],["上","shàng","up; on; go to","localizer/verb"],["上班","shàngbān","go to work","verb"],["上课","shàngkè","attend class","verb"],["上午","shàngwǔ","morning","time"],["上学","shàngxué","go to school","verb"],["少","shǎo","few; little","adjective"],["谁","shéi/shuí","who","question"],["什么","shénme","what","question"],["生病","shēngbìng","get sick","verb"],["十","shí","ten","number"],["时候","shíhou","time; moment","noun"],["时间","shíjiān","time","noun"],["事","shì","matter; thing","noun"],["是","shì","to be","verb"],["手机","shǒujī","mobile phone","noun"],["书","shū","book","noun"],["书店","shūdiàn","bookstore","noun"],["水","shuǐ","water","noun"],["水果","shuǐguǒ","fruit","noun"],["睡","shuì","sleep","verb"],["睡觉","shuìjiào","sleep","verb"],["说","shuō","speak; say","verb"],["说话","shuōhuà","talk; speak","verb"],["四","sì","four","number"],["岁","suì","years of age","MW"],["他","tā","he; him","pronoun"],["它","tā","it","pronoun"],["她","tā","she; her","pronoun"],["他们","tāmen","they (mixed/masculine)","pronoun"],["它们","tāmen","they (non-human)","pronoun"],["她们","tāmen","they (female)","pronoun"],["太","tài","too; very","adverb"],["天","tiān","day; sky","noun"],["天气","tiānqì","weather","noun"],["听","tīng","listen; hear","verb"],["听见","tīngjiàn","hear","verb"],["同学","tóngxué","classmate","noun"],["外","wài","outside; foreign","noun/localizer"],["外边","wàibian","outside","localizer"],["玩","wán","play; have fun","verb"],["晚","wǎn","late; evening","adjective"],["晚饭","wǎnfàn","dinner","noun"],["晚上","wǎnshang","evening; night","time"],["喂","wèi","hello (phone)","interjection"],["问","wèn","ask","verb"],["问题","wèntí","question; problem","noun"],["我","wǒ","I; me","pronoun"],["我们","wǒmen","we; us","pronoun"],["五","wǔ","five","number"],["午饭","wǔfàn","lunch","noun"],["喜欢","xǐhuan","like","verb"],["下","xià","down; below; next","localizer/verb"],["下雨","xià yǔ","rain","verb"],["下班","xiàbān","get off work","verb"],["下课","xiàkè","finish class","verb"],["下午","xiàwǔ","afternoon","time"],["先生","xiānsheng","Mr.; sir","noun"],["现在","xiànzài","now","time"],["想","xiǎng","think; want","verb/modal"],["小","xiǎo","small; little","adjective"],["小朋友","xiǎopéngyǒu","child","noun"],["小时","xiǎoshí","hour","noun"],["小学","xiǎoxué","primary school","noun"],["小学生","xiǎoxuéshēng","primary school student","noun"],["些","xiē","some; a few","MW"],["写","xiě","write","verb"],["谢谢","xièxie","thank you","phrase"],["新","xīn","new","adjective"],["星期","xīngqī","week","noun"],["星期日","xīngqīrì","Sunday","noun"],["星期天","xīngqītiān","Sunday","noun"],["休息","xiūxi","rest","verb"],["学","xué","study; learn","verb"],["学生","xuéshēng","student","noun"],["学习","xuéxí","study; learn","verb"],["学校","xuéxiào","school","noun"],["一","yī","one","number"],["一半","yíbàn","half","number"],["一下","yíxià","a short while; a bit","MW"],["一点儿","yìdiǎnr","a little bit","MW"],["一些","yìxiē","some; a few","MW"],["衣服","yīfu","clothes","noun"],["医生","yīshēng","doctor","noun"],["医院","yīyuàn","hospital","noun"],["椅子","yǐzi","chair","noun"],["元","yuán","yuan (currency)","MW"],["月","yuè","month; moon","noun"],["再","zài","again","adverb"],["再见","zàijiàn","goodbye","phrase"],["早","zǎo","early; morning","adjective/time"],["早饭","zǎofàn","breakfast","noun"],["早上","zǎoshang","morning","time"],["怎么","zěnme","how","question"],["怎么样","zěnmeyàng","how is it; how about","question"],["找","zhǎo","look for","verb"],["这","zhè","this","pronoun"],["这边","zhèbiān","this side","pronoun"],["这个","zhège","this one","pronoun"],["这里","zhèlǐ","here","pronoun"],["这儿","zhèr","here","pronoun"],["这些","zhèxiē","these","pronoun"],["真","zhēn","really; truly","adverb"],["正在","zhèngzài","in the process of","adverb"],["知道","zhīdào","know a fact","verb"],["只","zhī","measure word for animals","MW"],["中国","Zhōngguó","China","place"],["中文","Zhōngwén","Chinese language","noun"],["中午","zhōngwǔ","noon","time"],["中学","zhōngxué","middle school","noun"],["中学生","zhōngxuéshēng","middle school student","noun"],["住","zhù","live; stay","verb"],["桌子","zhuōzi","table","noun"],["昨天","zuótiān","yesterday","time"],["坐","zuò","sit","verb"],["做","zuò","do; make","verb"],["做饭","zuò fàn","cook","verb"],["雪","xuě","snow","noun"],["要","yào","want; will","verb/modal"],["也","yě","also; too","adverb"],["有","yǒu","have; there is","verb"],["有的","yǒude","some","pronoun"],["有点儿","yǒudiǎnr","a little; somewhat","adverb"],["有些","yǒuxiē","some","pronoun"],["雨","yǔ","rain","noun"],["在","zài","at; in; progressive","verb/preposition"],["字","zì","character; word","noun"]];
+const grammarBank=[["Personal pronouns","我 / 你 / 他 / 她 + 谓语","Use basic personal pronouns as subjects.","我是学生。","我是学生。"],["是 sentence","主语 + 是 + 名词","Use 是 for identity/category, not normally before adjectives.","她是医生。","她是很高。"],["有 sentence","主语 + 有 + 宾语","Use 有 for possession/existence.","我有一本书。","我一本书。"],["Location 在","主语 + 在 + 地点 + 动词","Put 在 before the action for where an action happens.","我在北京工作。","我工作在北京。"],["在 + place","主语 + 在 + 地点","在 can mean be located/at.","我在家。","我家在。"],["住在","主语 + 住在 + 地点","住 commonly takes 在 before the location.","我住在北京。","我在北京住。"],["坐在","主语 + 坐在 + 地点","坐在 marks the place where someone sits.","他坐在椅子上。","他在椅子坐。"],["方位词 上","名词 + 上","Marks on/top of something.","书在桌子上。","书在桌子。"],["方位词 下","名词 + 下","Marks under/below something.","猫在桌子下。","猫在桌子。"],["方位词 里","名词 + 里","Marks inside.","人在房间里。","人在房间。"],["方位词 外","名词 + 外面","Marks outside.","他在外面。","他在外。"],["前/后","名词 + 前面/后面","Marks in front/behind.","学校在家前面。","学校在家前。"],["这/那 + 量词 + 名词","这/那 + 个/本等 + 名词","Demonstratives normally take a measure word before a noun.","这本书很好。","这书很好。"],["哪 + 量词 + 名词","哪 + 量词 + 名词","Ask which item.","你要哪本书？","你要哪书？"],["谁","谁 + 谓语？","Ask who.","谁是老师？","什么是老师？"],["什么","什么 + 名词/谓语","Ask what.","你叫什么名字？","你叫谁名字？"],["哪儿/哪里","在哪儿 + 动词/名词","Ask where.","你住在哪儿？","你住什么？"],["怎么","怎么 + 动词","Ask how an action is done.","你怎么去学校？","你什么去学校？"],["怎么样","怎么样？","Ask how something is / request an opinion.","这个怎么样？","这个怎么？"],["几 + 量词","几 + 量词 + 名词","Ask a small number.","你有几本书？","你有几书？"],["多少","多少 + 名词 / 多少钱","Ask an amount or price.","这个多少钱？","这个几钱？"],["吗 question","陈述句 + 吗？","Turn a statement into a yes/no question.","你是学生吗？","你是学生？"],["呢 question","名词/代词 + 呢？","Return a question or ask about a topic.","你呢？","你吗？"],["吧","陈述 + 吧","Can soften a suggestion or seek confirmation.","我们走吧。","我们走吗。"],["A-not-A question","V/Adj + 不 + V/Adj？","Alternative yes/no question.","你认识他不认识？","你认识吗不？"],["是不是","是不是 + 陈述/谓语","Common confirmation question.","你是不是老师？","你是老师是不是？"],["正反问答","A 不 A → 是/不是","Answer A-not-A questions with the matching polarity.","你累不累？不累。","你累不累？很。"],["的 possession","A 的 B","Marks possession or attribution.","我的书。","我书。"],["的 adjective modifier","形容词 + 的 + 名词","Links descriptive phrases to nouns.","漂亮的衣服。","漂亮衣服。"],["名词作定语","地点/人 + 的 + 名词","Use 的 for many possessive/attributive noun phrases.","中国的老师。","中国老师。"],["量词","数词 + 量词 + 名词","Counted nouns normally require a measure word.","三个苹果。","三苹果。"],["个","数词 + 个 + 名词","General measure word for many common nouns.","三个学生。","三学生。"],["本","数词 + 本 + 书/杂志","Measure word for books.","两本书。","两书。"],["口","数词 + 口 + 人","Measure word for household members.","四口人。","四个人家。"],["岁","数词 + 岁","Age uses 岁 after the number.","我二十三岁。","我是二十三。"],["块/元","数词 + 块/元 + 钱","Common price expressions.","十块钱。","十个钱。"],["时间词位置","主语 + 时间 + 动词","Time commonly comes before the verb.","我明天去学校。","我去明天学校。"],["时间 + 主语","时间 + 主语 + 动词","Time can also be fronted for emphasis/context.","明天我去学校。","明天去我学校。"],["年/月/日","年 + 月 + 号/日","Dates follow year-month-day order.","2026年9月16号。","9月2026年16号。"],["点","时间 + 点","Use 点 for the hour.","现在三点。","现在三个。"],["半","几点半","Half past an hour.","三点半。","三点一半。"],["分钟","数字 + 分钟","Express minutes.","五分钟。","五个分钟。"],["星期","星期 + 数字/天","Days of the week.","星期三。","三星期。"],["很 + adjective","主语 + 很 + 形容词","很 often links a subject to an adjective naturally.","今天很冷。","今天是冷。"],["很 not always “very”","很 + adjective","很 can function as a grammatical linker without strong “very” emphasis.","她很高。","她是高。"],["太…了","太 + adjective + 了","Express “too/so …”.","太贵了！","很贵了！"],["有点儿","有点儿 + adjective","Express a little, often with an undesirable state.","我有点儿累。","我有一点累。"],["一点儿","一点儿 + noun/adj","Express a small amount.","喝一点儿水。","喝有点儿水。"],["都","主语 + 都 + 谓语","都 means all/both.","我们都喜欢茶。","我们喜欢都茶。"],["也","主语 + 也 + 谓语","也 means also/too.","我也喜欢。","我喜欢也。"],["和","A 和 B","Join nouns/people.","我和朋友。","我朋友和。"],["因为…所以…","因为 + 原因，所以 + 结果","Give reason and result.","因为下雨，所以我不去。","因为下雨，所以不我去。"],["但是","A，但是 B","Contrast two clauses.","我喜欢茶，但是他喜欢水。","我喜欢茶但是他。"],["如果…","如果 + 条件，…","Basic if-condition framing.","如果下雨，我不去。","如果我不去，下雨。"],["想","主语 + 想 + 动词","Express want/intention.","我想喝茶。","我喝想茶。"],["要","主语 + 要 + 名词/动词","Can express want/need or a near-future intention.","我要买书。","我买要书。"],["会 ability","主语 + 会 + 动词","Learned/known ability.","我会说汉语。","我能说汉语会。"],["能 ability/possibility","主语 + 能 + 动词","Ability/possibility depending on context.","我能去。","我去能。"],["可以 permission","主语 + 可以 + 动词","Permission/possibility.","可以坐吗？","可以吗坐？"],["应该","主语 + 应该 + 动词","Basic “should”.","你应该学习。","你学习应该。"],["请","请 + 动词","Polite request.","请坐。","坐请。"],["不要","不要 + 动词","Negative command / don’t.","不要说话。","不说话要。"],["别","别 + 动词","Colloquial negative command.","别走。","不别走。"],["不","不 + 动词/形容词","General present/future negation.","我不喝茶。","我没喝茶。"],["不 tone change","不 + fourth tone → bú","不 is pronounced bú before a fourth-tone syllable.","不是 bú shì。","不是 bù shì。"],["没/没有","没(有) + 动词/有","Past/non-occurrence or lack of possession.","我没有钱。","我不有钱。"],["了 completed action","动词 + 了","Marks a completed/change event in many contexts.","我买了书。","我了买书。"],["了 change of state","句末 + 了","Can mark a new situation/state.","下雨了。","下雨。"],["了吗","动词 + 了吗？","Ask whether an action has happened.","你吃饭了吗？","你吗吃饭了？"],["正在","正在 + 动词","Marks an action in progress.","我正在学习。","我学习正在。"],["在 + verb progressive","在 + 动词","Colloquial progressive marker.","我在看电视。","我看在电视。"],["先…再…","先 + A，再 + B","Sequence two actions.","先吃饭，再学习。","先再吃饭学习。"],["一起","主语 + 一起 + 动词","Do something together.","我们一起去。","我们去一起。"],["从…到…","从 + 起点 + 到 + 终点","Express a range.","从北京到上海。","北京从到上海。"],["离…近/远","A 离 B + 近/远","Express distance.","学校离我家很近。","学校很近离我家。"],["比较句 有点/很","A + adjective","Basic adjective predicates need no 是.","苹果很大。","苹果是很大。"],["比较 “比” preview","A 比 B + adjective","A simple comparison pattern worth recognising; usually developed beyond the earliest beginner core.","北京比伦敦冷。","北京比冷伦敦。"],["结果 看见","V + 见","看见 combines 看 + 见 to express successful seeing.","我看见他了。","我看他见了。"],["结果 听见","V + 见","听见 expresses successfully hearing.","我听见了。","我了听见。"],["离合词","动宾式词组可拆分","Some common verbs behave as separable verb-object compounds.","睡觉了。","睡了觉。"],["兼语/使令 basics","请/叫 + 人 + 动词","Basic request/call someone to do something.","请你坐。","请坐你。"],["Sentence-final 吧/呢/吗","句末语气词","Use particles to shape question, suggestion, or conversational tone.","你呢？我们走吧。你好吗？","你呢吗吧？"]];
+// Official Level-1 coverage additions: split out syllabus items that are easy to miss when grouped.
+grammarBank.push(
+ ["Prefix 小-","小 + name","A familiar/young-person prefix in names or terms.","小王的书。","王的小书。"],
+ ["Prefix 第-","第 + number","Forms ordinals.","第一课。","一第一课。"],
+ ["Suffix -边","place + 边","Forms location words such as 这边/那边/外边.","请来这边。","请来这。"],
+ ["Structural particle 地","adverb + 地 + verb","Links an adverbial description to an action.","慢慢地说。","慢慢说地。"],
+ ["一块儿","一起/一块儿 + verb","Do something together.","我们一块儿去。","我们去一块儿。"],
+ ["还是 choice question","A 还是 B？","Ask the listener to choose.","你喝茶还是喝水？","你喝茶吗喝水？"],
+ ["一边…一边…","一边 + V1，一边 + V2","Describe two actions happening together.","我一边听歌，一边学习。","我一边听歌，再学习。"],
+ ["动量补语","V + number + 次","Express how many times an action occurs.","我看过一次。","我一次看过。"],
+ ["名词谓语句","时间/数量 + 是?","A noun, time or quantity can function as a predicate in basic sentences.","今天星期三。","今天是星期三。"],
+ ["非主谓句","single-word/phrase utterance","Common short utterances can omit an explicit subject.","谢谢！","我谢谢！"],
+ ["祈使句","请/不要/别 + V","Give a request or command.","请坐。","请你坐吗。"],
+ ["感叹句","太 + adj + 了","Express strong feeling.","太好了！","很好的。"],
+ ["处所 + 是 + 名词","地点 + 是 + 名词","Identify what is located at a place.","桌子上是书。","桌子是书上。"],
+ ["处所 + 有 + 数量 + 名词","地点 + 有 + 数量短语 + 名词","Express existence at a place.","桌子上有一本书。","桌子上一本书有。"],
+ ["目的关系","先做A，再做B","The first action can set up the purpose/order for the next action.","我去商店买东西。","我买东西去商店。"],
+ ["方式关系","V1 + O + V2","An earlier action can function as the manner/means for a later action.","坐车去学校。","去学校坐车。"],
+ ["双宾语","主语 + 给/问 + 人 + 物","Some verbs can take a person and a thing as two objects.","我给你钱。","我给钱你。"],
+ ["还 + verb/adjective","主语 + 还 + 谓语","还 can mean still or also in beginner contexts.","我还要喝水。","我喝还要水。"],
+ ["有的…有的…","有的 + A，有的 + B","Divide a group into different subsets.","有的人喝茶，有的人喝水。","有的人喝茶有的人。"],
+ ["前/后 + time","时间 + 前/后","Place a time relation around an event.","下课以后我回家。","以后下课我回家。"],
+ ["最 + adjective","最 + 形容词","Express the highest degree.","这个最好。","这个很最。"]
+);
+
+function renderGrammarBank(){const q=(document.getElementById('grammarSearch')?.value||'').toLowerCase();const g=document.getElementById('grammarGrid');if(!g)return;const rows=grammarBank.filter(x=>x.join(' ').toLowerCase().includes(q));g.innerHTML=rows.map((x,i)=>`<div class="rule"><div class="small"><b>Grammar ${i+1}</b> · ${x[0]}</div><h3 style="margin:6px 0">${x[1]}</h3><p>${x[2]}</p><div class="good"><b>${x[3]}</b><br/><span class="pinyin">${x[4]}</span></div><div class="bad" style="margin-top:7px">Common trap: ${x[4]}</div></div>`).join('')||'<p>No grammar items match your search.</p>';}
+function randomGrammarQuiz(){const x=grammarBank[Math.floor(Math.random()*grammarBank.length)];const box=document.getElementById('grammarQuiz');box.classList.remove('hidden');const distractor=grammarBank.find(y=>y[3]!==x[3])?.[3]||x[4];const opts=[x[3],x[4],distractor].sort(()=>Math.random()-.5);box.innerHTML=`<b>${x[0]}</b><p>Which sentence follows this pattern?</p>${opts.map(o=>`<button type="button" data-ok="${o===x[3]?'1':'0'}" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.disabled=true);this.insertAdjacentHTML('afterend',this.dataset.ok==='1'?'<p class="good">✓ Correct.</p>':'<p class="bad">✗ Correct: ${x[3]}</p>')">${o}</button>`).join('')}`;}
+
+const questions=[["This book is very cheap.", "这本书很便宜。", "Zhè běn shū hěn piányi."], ["I don't know that person.", "我不认识那个人。", "Wǒ bù rènshi nàge rén."], ["I'm a bit tired.", "我有点儿累。", "Wǒ yǒudiǎnr lèi."], ["He drinks tea at home.", "他在家喝茶。", "Tā zài jiā hē chá."], ["How many books do you have?", "你有几本书？", "Nǐ yǒu jǐ běn shū?"], ["I think tomorrow will be cold.", "我觉得明天很冷。", "Wǒ juéde míngtiān hěn lěng."], ["I saw the doctor at the hospital.", "我在医院看见医生了。", "Wǒ zài yīyuàn kànjiàn yīshēng le."], ["I work in Beijing.", "我在北京工作。", "Wǒ zài Běijīng gōngzuò."], ["Today isn't cold.", "今天不冷。", "Jīntiān bù lěng."], ["That book is expensive.", "那本书很贵。", "Nà běn shū hěn guì."], ["I know his name.", "我知道他的名字。", "Wǒ zhīdào tā de míngzi."], ["There are four people in my family.", "我家有四口人。", "Wǒ jiā yǒu sì kǒu rén。"], ["What is your name?", "你叫什么名字？", "Nǐ jiào shénme míngzi?"], ["I am British.", "我是英国人。", "Wǒ shì Yīngguó rén."], ["I like Chinese tea.", "我喜欢中国茶。", "Wǒ xǐhuan Zhōngguó chá."], ["Where do you live?", "你住在哪儿？", "Nǐ zhù zài nǎr?"], ["I have three friends.", "我有三个朋友。", "Wǒ yǒu sān gè péngyou."], ["Today is very hot.", "今天很热。", "Jīntiān hěn rè."], ["Tomorrow I want to go to the shop.", "明天我想去商店。", "Míngtiān wǒ xiǎng qù shāngdiàn."], ["My teacher is very good.", "我的老师很好。", "Wǒ de lǎoshī hěn hǎo."], ["What time is it now?", "现在几点？", "Xiànzài jǐ diǎn?"], ["I study Chinese at school.", "我在学校学习汉语。", "Wǒ zài xuéxiào xuéxí Hànyǔ."], ["My family has four people.", "我家有四口人。", "Wǒ jiā yǒu sì kǒu rén."], ["I don't have money.", "我没有钱。", "Wǒ méiyǒu qián."], ["This apple is very big.", "这个苹果很大。", "Zhège píngguǒ hěn dà."], ["Which book do you want?", "你要哪本书？", "Nǐ yào nǎ běn shū?"], ["I can speak Chinese.", "我会说汉语。", "Wǒ huì shuō Hànyǔ."]];
+
+const productionBank=[];
+vocab.forEach(v=>{
+  productionBank.push([`Write the Chinese for: “${v[2]}”`,v[0],v[1]]);
+});
+questions.forEach(q=>productionBank.push([`Write the Chinese for: “${q[0]}”`,q[1],q[2]]));
+
+
+
+const testBank=[];
+function addProd(prompt,answer,py){testBank.push([prompt,answer,py,"prod",[]]);}
+function addMC(prompt,answer,py,options){testBank.push([prompt,answer,py,"mc",options]);}
+function uniq(a){return [...new Set(a)];}
+
+// 4 clean questions for every vocabulary item = 600+ questions.
+vocab.forEach(v=>{
+  const [zh,py,en]=v;
+  addProd(`Write the Chinese for: “${en}”`,zh,py);
+  addProd(`Write the pinyin for: ${zh}`,py,py);
+  const meanings=uniq([en,...vocab.map(x=>x[2])].filter(x=>x!==en)).slice(0,3);
+  addMC(`What does ${zh} mean?`,en,py,[en,...meanings]);
+  const chars=uniq([zh,...vocab.map(x=>x[0])].filter(x=>x!==zh)).slice(0,3);
+  addMC(`Which Chinese word matches “${py}”?`,zh,py,[zh,...chars]);
+});
+
+// Clean sentence production bank: English -> correct Chinese only.
+const sentenceBank=[
+["This book is very cheap.","这本书很便宜。","Zhè běn shū hěn piányi."],
+["I don't know that person.","我不认识那个人。","Wǒ bù rènshi nàge rén."],
+["I am a little tired.","我有点儿累。","Wǒ yǒudiǎnr lèi."],
+["He drinks tea at home.","他在家喝茶。","Tā zài jiā hē chá."],
+["How many books do you have?","你有几本书？","Nǐ yǒu jǐ běn shū?"],
+["I think tomorrow will be cold.","我觉得明天很冷。","Wǒ juéde míngtiān hěn lěng."],
+["I saw the doctor at the hospital.","我在医院看见医生了。","Wǒ zài yīyuàn kànjiàn yīshēng le."],
+["I work in Beijing.","我在北京工作。","Wǒ zài Běijīng gōngzuò."],
+["Today isn't cold.","今天不冷。","Jīntiān bù lěng."],
+["That book is expensive.","那本书很贵。","Nà běn shū hěn guì."],
+["I know his name.","我知道他的名字。","Wǒ zhīdào tā de míngzi."],
+["There are four people in my family.","我家有四口人。","Wǒ jiā yǒu sì kǒu rén."],
+["What is your name?","你叫什么名字？","Nǐ jiào shénme míngzi?"],
+["I am British.","我是英国人。","Wǒ shì Yīngguó rén."],
+["I like Chinese tea.","我喜欢中国茶。","Wǒ xǐhuan Zhōngguó chá."],
+["Where do you live?","你住在哪儿？","Nǐ zhù zài nǎr?"],
+["I have three friends.","我有三个朋友。","Wǒ yǒu sān gè péngyou."],
+["Today is very hot.","今天很热。","Jīntiān hěn rè."],
+["Tomorrow I want to go to the shop.","明天我想去商店。","Míngtiān wǒ xiǎng qù shāngdiàn."],
+["My teacher is very good.","我的老师很好。","Wǒ de lǎoshī hěn hǎo."],
+["What time is it now?","现在几点？","Xiànzài jǐ diǎn?"],
+["I study Chinese at school.","我在学校学习汉语。","Wǒ zài xuéxiào xuéxí Hànyǔ."],
+["I don't have money.","我没有钱。","Wǒ méiyǒu qián."],
+["This apple is very big.","这个苹果很大。","Zhège píngguǒ hěn dà."],
+["I can speak Chinese.","我会说汉语。","Wǒ huì shuō Hànyǔ."],
+["I drink tea.","我喝茶。","Wǒ hē chá."],
+["I drink water.","我喝水。","Wǒ hē shuǐ."],
+["I eat rice.","我吃米饭。","Wǒ chī mǐfàn."],
+["I like apples.","我喜欢苹果。","Wǒ xǐhuan píngguǒ."],
+["I study at school.","我在学校学习。","Wǒ zài xuéxiào xuéxí."],
+["He works in Beijing.","他在北京工作。","Tā zài Běijīng gōngzuò."],
+["She studies Chinese.","她学习汉语。","Tā xuéxí Hànyǔ."],
+["My friend is very good.","我的朋友很好。","Wǒ de péngyou hěn hǎo."],
+["This tea is cheap.","这茶很便宜。","Zhè chá hěn piányi."],
+["That apple is expensive.","那个苹果很贵。","Nàge píngguǒ hěn guì."],
+["I am very happy.","我很高兴。","Wǒ hěn gāoxìng."],
+["I am a little tired today.","我今天有点儿累。","Wǒ jīntiān yǒudiǎnr lèi."],
+["The weather is very hot.","天气很热。","Tiānqì hěn rè."],
+["The weather is very cold.","天气很冷。","Tiānqì hěn lěng."],
+["I have two books.","我有两本书。","Wǒ yǒu liǎng běn shū."],
+["I have one book.","我有一本书。","Wǒ yǒu yì běn shū."],
+["I have three apples.","我有三个苹果。","Wǒ yǒu sān gè píngguǒ."],
+["Where is the school?","学校在哪儿？","Xuéxiào zài nǎr?"],
+["Where is the hospital?","医院在哪儿？","Yīyuàn zài nǎr?"],
+["Who is your teacher?","你的老师是谁？","Nǐ de lǎoshī shì shéi?"],
+["Who is that person?","那个人是谁？","Nàge rén shì shéi?"],
+["What is this?","这是什么？","Zhè shì shénme?"],
+["What do you want?","你想要什么？","Nǐ xiǎng yào shénme?"],
+["Which book is yours?","哪本书是你的？","Nǎ běn shū shì nǐ de?"],
+["I go to school tomorrow.","我明天去学校。","Wǒ míngtiān qù xuéxiào."],
+["I go home now.","我现在回家。","Wǒ xiànzài huí jiā."],
+["I watch a film.","我看电影。","Wǒ kàn diànyǐng."],
+["I read a book.","我读书。","Wǒ dú shū."],
+["I write Chinese characters.","我写汉字。","Wǒ xiě Hànzì."],
+["I speak Chinese.","我说汉语。","Wǒ shuō Hànyǔ."],
+["I want to buy fruit.","我想买水果。","Wǒ xiǎng mǎi shuǐguǒ."],
+["I want to eat fruit.","我想吃水果。","Wǒ xiǎng chī shuǐguǒ."],
+["Please drink water.","请喝水。","Qǐng hē shuǐ."],
+["Please sit.","请坐。","Qǐng zuò."],
+["Goodbye.","再见。","Zàijiàn."]
+];
+sentenceBank.forEach(x=>{
+  addProd(`Write the Chinese for: “${x[0]}”`,x[1],x[2]);
+  addMC(`Which Chinese sentence means “${x[0]}”?`,x[1],x[2],[x[1],...shuffle(sentenceBank.filter(y=>y[1]!==x[1]).map(y=>y[1])).slice(0,3)]);
+});
+
+// Grammar recognition, based on the revision material used in the app.
+[
+["Which sentence correctly places the location before the verb?","我在北京工作。","Wǒ zài Běijīng gōngzuò.",["我在北京工作。","我工作在北京。","我北京在工作。"]],
+["Which sentence is correct?","今天很冷。","Jīntiān hěn lěng.",["今天是很冷。","今天很冷。","今天很是冷。"]],
+["Which is correct for “three books”?","三本书","Sān běn shū.",["三个书","三本书","三口书"]],
+["Which is correct for “four family members”?","四口人","Sì kǒu rén.",["四本人","四个书","四口人"]],
+["Which word means “know a person”?","认识","rènshi",["认识","知道","觉得"]],
+["Which word means “know a fact”?","知道","zhīdào",["认识","知道","觉得"]],
+["Which word means “think/feel”?","觉得","juéde",["认识","知道","觉得"]],
+["Which word means “see/catch sight of”?","看见","kànjiàn",["看","看见","知道"]],
+["Which negative is used with 有?","没有","méiyǒu",["不有","没有","不是"]],
+["Which is correct?","这本书很贵。","Zhè běn shū hěn guì.",["这本书是很贵。","这本书很贵。","这本书很是贵。"]],
+["Which is correct?","我在上海工作。","Wǒ zài Shànghǎi gōngzuò.",["我工作在上海。","我在上海工作。","我上海在工作。"]],
+["Which is correct?","我有两本书。","Wǒ yǒu liǎng běn shū.",["我有两个书。","我有两本书。","我有两口书。"]],
+["Which is correct?","我不认识他。","Wǒ bù rènshi tā.",["我不是认识他。","我不认识他。","我没认识他。"]],
+["Which is correct?","这个苹果很贵。","Zhège píngguǒ hěn guì.",["这个苹果是很贵。","这个苹果很贵。","这个苹果在很贵。"]],
+["Which phrase means “a little tired”?","有点儿累","Yǒudiǎnr lèi",["很累","有点儿累","是累"]]
+].forEach(x=>addMC(x[0],x[1],x[2],x[3]));
+
+// Separate pinyin-only production prompts are accepted with or without tone marks.
+vocab.slice(0,80).forEach(v=>addProd(`Pinyin only: write the pinyin for ${v[0]}`,v[1],v[1]));
+
+let recallQueue=[];
+
+const recognitionChars=['爱', '八', '爸', '吧', '白', '百', '班', '半', '包', '杯', '本', '边', '便', '病', '不', '菜', '茶', '常', '唱', '超', '车', '吃', '出', '穿', '床', '打', '大', '蛋', '到', '道', '得', '的', '弟', '第', '点', '电', '东', '都', '读', '对', '多', '儿', '二', '饭', '房', '飞', '非', '分', '服', '高', '哥', '歌', '个', '给', '工', '公', '狗', '关', '贵', '国', '果', '还', '孩', '汉', '好', '号', '喝', '和', '很', '后', '候', '话', '欢', '回', '会', '火', '机', '鸡', '几', '家', '间', '见', '件', '叫', '姐', '今', '九', '觉', '开', '看', '可', '客', '课', '口', '块', '来', '老', '了', '冷', '里', '两', '亮', '零', '六', '妈', '吗', '买', '卖', '忙', '猫', '么', '没', '妹', '们', '米', '面', '名', '明', '哪', '那', '奶', '男', '脑', '呢', '能', '你', '年', '您', '牛', '女', '朋', '漂', '苹', '七', '期', '起', '气', '千', '前', '钱', '请', '去', '热', '人', '认', '日', '三', '商', '上', '少', '谁', '什', '生', '师', '十', '时', '识', '士', '市', '事', '视', '是', '手', '书', '水', '睡', '说', '司', '四', '岁', '他', '它', '她', '太', '题', '天', '条', '听', '同', '外', '玩', '晚', '喂', '文', '问', '我', '五', '午', '西', '息', '习', '喜', '系', '下', '先', '现', '想', '小', '校', '些', '写', '谢', '新', '星', '兴', '休', '学', '雪', '样', '要', '也', '一', '衣', '医', '宜', '以', '椅', '影', '友', '有', '雨', '语', '元', '院', '月', '再', '在', '早', '怎', '找', '这', '真', '正', '知', '只', '中', '钟', '住', '桌', '子', '字', '租', '昨', '作', '坐', '做'];
+let charIndex=0,charScore=0;
+function nextCharQuiz(){
+ const ch=recognitionChars[charIndex%recognitionChars.length]; charIndex++;
+ const related=vocab.filter(v=>v[0].includes(ch));
+ const correct=related[0]||vocab[0];
+ let opts=[correct,...related.slice(1,4)];
+ while(opts.length<4){const x=vocab[Math.floor(Math.random()*vocab.length)];if(!opts.some(o=>o[0]===x[0]))opts.push(x);}
+ opts=opts.sort(()=>Math.random()-.5);
+ const target=document.getElementById('charTarget'); if(target)target.textContent=ch;
+ const hint=document.getElementById('charHint'); if(hint)hint.textContent=`Which word contains “${ch}”?`;
+ const fb=document.getElementById('charFeedback'); if(fb)fb.innerHTML='';
+ const area=document.getElementById('charOptions'); if(!area)return;
+ area.innerHTML=opts.map(v=>`<button type="button" data-ok="${v[0]===correct[0]?'1':'0'}">${v[0]} <span class="small">${v[1]}</span></button>`).join('');
+ area.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{area.querySelectorAll('button').forEach(x=>x.disabled=true);const ok=b.dataset.ok==='1';if(ok)charScore++;document.getElementById('charScore').textContent=charScore;document.getElementById('charFeedback').innerHTML=ok?'<p class="good">✓ Correct</p>':`<p class="bad">✗ One correct example: ${correct[0]} · ${correct[1]}</p>`;}));
+}
+function renderCharacters(){const g=document.getElementById('charGrid');if(!g)return;g.classList.remove('hidden');g.innerHTML=recognitionChars.map((c,i)=>{const words=vocab.filter(v=>v[0].includes(c)).slice(0,3).map(v=>v[0]).join(' · ');return `<div class="rule"><div class="big">${c}</div><div class="small">#${i+1} · ${words}</div></div>`;}).join('');}
+function renderWords(){const q=(document.getElementById('search')?.value||'').toLowerCase();const g=document.getElementById('wordGrid');if(!g)return;const rows=vocab.filter(v=>v.join(' ').toLowerCase().includes(q));g.innerHTML=rows.map((v,i)=>`<div class="rule"><div class="small"><b>${i+1}</b> · ${v[3]}</div><div class="big">${v[0]}</div><div class="pinyin">${v[1]}</div><p>${v[2]}</p><button type="button" onclick="speakZh(${JSON.stringify(v[0])})">🔊 Hear</button></div>`).join('');}
+
+let state=JSON.parse(localStorage.getItem('hsk1mastery')||'{"reviews":{},"seen":0,"score":0}');
+let ci=0, revealed=false, qi=0, qscore=0;
+
+function save(){localStorage.setItem('hsk1mastery',JSON.stringify(state));updateStats()}
+function updateStats(){
+ document.getElementById('seen').textContent=state.seen||0;
+ document.getElementById('cardCount').textContent=state.seen||0;
+ document.getElementById('quizScore').textContent=qscore;
+ document.getElementById('mastered').textContent=Object.values(state.srs||{}).filter(x=>x.i>=7).length;
+ document.getElementById('streak').textContent=qscore;
+}
+const topicBank=[
+ {title:'Meet & introduce yourself',en:'Names, identity and basic introductions',words:['你好','你好','叫','名字','我','你','您','是','学生','老师','朋友'],grammar:['是 sentence','Personal pronouns','的'],mission:'Introduce yourself, ask someone’s name and respond politely.'},
+ {title:'Family & people',en:'Family members and describing people',words:['爸爸','妈妈','哥哥','姐姐','弟弟','妹妹','儿子','女儿','家人','孩子','人','朋友'],grammar:['们 plural suffix','这/那 + measure word','有 sentence'],mission:'Talk about who is in your family and who you know.'},
+ {title:'Numbers & quantities',en:'Numbers, age, prices and quantities',words:['一','二','三','四','五','六','七','八','九','十','百','千','两','多少','几','岁','个','本','口','块','元'],grammar:['Measure words','几 / 多少','两 + measure word'],mission:'Give ages, prices, counts and quantities accurately.'},
+ {title:'Time & dates',en:'Days, dates, months and clock time',words:['今天','昨天','明天','今年','去年','明年','年','月','日','星期','上午','中午','下午','晚上','早上','白天','时候','时间','点','分','分钟','半'],grammar:['Time before verb','点 / 分钟','Time + sentence order'],mission:'Say when something happens and ask what time it is.'},
+ {title:'Daily routine',en:'Getting up, meals, school and work',words:['起床','早饭','午饭','晚饭','上班','下班','上课','下课','上学','睡觉','休息','学习','工作'],grammar:['Time + subject + verb','了','正在'],mission:'Describe a normal day from morning to night.'},
+ {title:'Home & rooms',en:'Home, rooms, furniture and location',words:['家','房间','椅子','桌子','里','外','边','前','后','上','下','住'],grammar:['Location 在','方位词','有 sentence'],mission:'Say where people and things are in your home.'},
+ {title:'Food & drink',en:'Meals, dishes, drinks and preferences',words:['饭','米饭','面包','面条儿','包子','饺子','菜','鸡蛋','苹果','水果','茶','水','牛奶','吃','喝'],grammar:['喜欢 + object','不 + verb','量词'],mission:'Order or describe food and say what you like.'},
+ {title:'Shopping',en:'Buying things, prices and opinions',words:['买','卖','钱','便宜','贵','商店','店','超市','东西','衣服','杯子','块','元'],grammar:['多少钱','这/那 + measure word','很 + adjective'],mission:'Ask the price, decide whether something is expensive and buy it.'},
+ {title:'School & study',en:'School, classes, teachers and learning',words:['学校','小学','中学','大学','学生','小学生','中学生','大学生','老师','同学','课','学习','学','读','读书','写','汉语','中文','汉字','字'],grammar:['在 + place','会 / 能 / 可以','把?'],mission:'Talk about school, lessons and what you study.'},
+ {title:'Work & company',en:'Jobs, workplace and working hours',words:['工作','公司','上班','下班','忙','同学','先生','女士'],grammar:['在 + place + verb','很 + adjective','也 / 都'],mission:'Say where you work, when you work and whether you are busy.'},
+ {title:'Transport & getting around',en:'Cars, taxis, trains and planes',words:['车','出租车','火车','飞机','开','开车','坐','去','来','到'],grammar:['坐 + transport','去/来 + place','到 + place'],mission:'Say how you travel and where you are going.'},
+ {title:'Phone & communication',en:'Calling, asking and responding',words:['电话','手机','打电话','问','问题','说','说话','听','听见','喂'],grammar:['吗 questions','呢 questions','能 / 可以'],mission:'Make a phone call, ask a simple question and understand a reply.'},
+ {title:'Health',en:'Illness, doctors and feeling unwell',words:['病','生病','看病','医生','医院','冷','热','没事','没关系'],grammar:['有 sentence','很 + adjective','不 / 没'],mission:'Explain that you are unwell and say where you need to go.'},
+ {title:'Weather',en:'Weather, temperature, rain and snow',words:['天气','冷','热','下雨','雨','雪','天'],grammar:['很 + adjective','正在','了'],mission:'Describe today’s weather and what is happening outside.'},
+ {title:'Likes & opinions',en:'Likes, dislikes and simple opinions',words:['喜欢','觉得','好','好吃','好看','好听','好玩儿','漂亮','高兴','真','非常','太'],grammar:['喜欢 + object','觉得 + clause','太……了','真 + adjective'],mission:'Say what you like and give a simple opinion.'},
+ {title:'Where is it?',en:'Places and directions',words:['这里','这儿','那里','那儿','哪里','哪儿','这边','那边','里','外','前','后'],grammar:['Location 在','哪 + measure word','方位词'],mission:'Ask where something is and answer with a clear location.'},
+ {title:'This, that & which',en:'Demonstratives and choosing things',words:['这','这个','这些','那','那个','那些','哪','哪个','哪些','东西'],grammar:['这/那 + measure word + noun','哪些'],mission:'Identify, compare and choose among nearby things.'},
+ {title:'Questions',en:'Who, what, where, when, how and how many',words:['谁','什么','哪里','哪儿','哪个','哪些','时候','怎么','怎么样','多少','几'],grammar:['Question words in place','吗','呢'],mission:'Ask and answer the core information questions without changing word order.'},
+ {title:'Abilities & permission',en:'Can, know how, be able and may',words:['会','能','可以','想','要'],grammar:['会 / 能 / 可以','想 / 要 + verb'],mission:'Say what you can do, may do, want to do and know how to do.'},
+ {title:'Negation',en:'Not, don’t, didn’t and absence',words:['不','没有','不要','没事','没关系'],grammar:['不 + verb/adjective','没 + verb','没有 + noun','不要 + verb'],mission:'Choose the correct negative form for habits, completed events and absence.'},
+ {title:'Actions in progress',en:'What is happening now',words:['现在','正在','在','看','听','吃','喝','学习','工作','说话'],grammar:['正在 + verb','在 + verb'],mission:'Describe an action happening right now.'},
+ {title:'Completed & changed',en:'Finished actions and new situations',words:['了','昨天','下课','下班','回'],grammar:['了 after verb','Sentence-final 了'],mission:'Recognise when 了 marks completion versus a changed situation.'},
+ {title:'Comparing simple things',en:'More, less, bigger and smaller',words:['大','小','多','少','贵','便宜','高兴','好'],grammar:['比','更?','最'],mission:'Make basic comparisons and identify simple extremes.'},
+ {title:'Giving & receiving',en:'Give something to someone',words:['给','我','你','他','她','东西','书','钱'],grammar:['给 + person + object','给 + object'],mission:'Say who gives what to whom.'},
+ {title:'Plans & intentions',en:'Wanting, needing and future actions',words:['想','要','明天','明年','去','来','买','学习','工作'],grammar:['想 + verb','要 + verb','再 + verb'],mission:'Talk about what you want or plan to do.'},
+ {title:'Sequence & repetition',en:'Again, then and short actions',words:['再','一下','时候','回','来','去'],grammar:['再 + verb','一下','先……?'],mission:'Ask someone to do something again or for a short while.'},
+ {title:'Everyday conversation',en:'Politeness, apologies and replies',words:['谢谢','不客气','对不起','没关系','你好','再见','请','请问','喂','吧'],grammar:['请 + verb','吧','吗 / 呢'],mission:'Handle a short everyday exchange politely.'},
+ {title:'Food out & restaurants',en:'Eating at a restaurant',words:['饭店','菜','饭','米饭','面条儿','包子','饺子','杯子','茶','水','吃','喝','请'],grammar:['请 + verb','要 + object','多少 + measure word'],mission:'Ask for food and drink and respond to a simple order.'},
+ {title:'Free time',en:'Watching, playing, singing and relaxing',words:['看','电视','电影','电影院','歌','唱','玩','好玩儿','休息'],grammar:['喜欢 + verb/object','正在 + verb','很 + adjective'],mission:'Talk about what you do for fun and what you enjoy.'},
+ {title:'Mastery mission',en:'Mixed real-life Level-1 communication',words:['我','你','他','她','我们','他们','是','有','在','喜欢','想','可以','知道','认识','觉得','怎么','什么','哪里','今天','明天'],grammar:['Sentence word order','Question words','Negation','在 + place','是 vs adjective'],mission:'Hold a short mixed conversation using the core Level-1 patterns.'}
+];
+let topicPos=0,topicQs=[],topicQPos=0,topicScore=0,topicAnswered=false;
+function topicKey(i){return 'hsk_topic_'+i}
+function topicMastery(i){return Math.max(0,Math.min(100,Number(localStorage.getItem(topicKey(i))||0))) }
+function saveTopicMastery(i,delta){const v=Math.max(0,Math.min(100,topicMastery(i)+delta));localStorage.setItem(topicKey(i),String(v));return v}
+function topicWords(t){const wanted=new Set(t.words);return vocab.filter(v=>wanted.has(v[0]))}
+function renderHomeTopics(){const el=document.getElementById('homeTopicPath');if(!el)return;const items=topicBank.slice(0,8);el.innerHTML=items.map((t,i)=>{const m=topicMastery(i);return `<div class="topicNode" onclick="show('topics');startTopic(${i})"><div class="num">UNIT ${i+1}</div><div class="title">${t.title}</div><div class="small">${m}% mastery</div><div class="bar"><div class="fill" style="width:${m}%"></div></div></div>`}).join('')}
+function renderTopics(){const grid=document.getElementById('topicGrid');if(!grid)return;const q=(document.getElementById('topicSearch')?.value||'').toLowerCase().trim();grid.innerHTML=topicBank.map((t,i)=>({t,i})).filter(x=>!q||`${x.t.title} ${x.t.en} ${x.t.words.join(' ')} ${x.t.grammar.join(' ')}`.toLowerCase().includes(q)).map(({t,i})=>{const m=topicMastery(i);const words=topicWords(t).length;return `<div class="topicCard"><div class="small">UNIT ${i+1} · ${words} linked words</div><h3>${t.title}</h3><div class="small">${t.en}</div><div class="topicTags">${t.grammar.slice(0,4).map(g=>`<span class="topicTag">${g}</span>`).join('')}</div><div class="small"><b>${m}%</b> mastery</div><div class="bar"><div class="fill" style="width:${m}%"></div></div><p class="small">${t.mission}</p><button class="primary" type="button" onclick="startTopic(${i})">${m?'Continue':'Start'} →</button></div>`}).join('')}
+function buildTopicQuestions(i){const t=topicBank[i],ws=topicWords(t);const pool=ws.length?ws:vocab.slice(0,10);const qs=[];for(let n=0;n<5;n++){const v=pool[n%pool.length];const others=vocab.filter(x=>x[0]!==v[0] && x[3]===v[3]).slice((n*3)%20,(n*3)%20+3);let opts=[v,...others].slice(0,4);if(opts.length<4)opts=[v,...vocab.filter(x=>x[0]!==v[0]).slice(0,3)];const ansZh=v[0];opts=opts.sort(()=>Math.random()-.5);qs.push({type:'meaning',prompt:v[0],sub:v[1],opts:opts.map(x=>x[2]),ans:opts.findIndex(x=>x[0]===ansZh),zh:v[0],py:v[1]});}return qs}
+function startTopic(i){topicPos=i;topicQs=buildTopicQuestions(i);topicQPos=0;topicScore=0;topicAnswered=false;const box=document.getElementById('topicPractice');box.classList.remove('hidden');renderTopicQuestion();box.scrollIntoView({behavior:'smooth',block:'start'})}
+function renderTopicQuestion(){const box=document.getElementById('topicPractice'),t=topicBank[topicPos],q=topicQs[topicQPos];box.innerHTML=`<div class="small">UNIT ${topicPos+1} · Question ${topicQPos+1}/5</div><h3>${t.title}</h3><div class="topicQ">${q.prompt}</div><div class="pinyin">${q.sub}</div><div class="examOptions">${q.opts.map((o,i)=>`<button class="realOpt" type="button" onclick="answerTopic(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div><div id="topicFeedback"></div>`}
+function answerTopic(i){if(topicAnswered)return;topicAnswered=true;const t=topicBank[topicPos],q=topicQs[topicQPos],ok=i===q.ans;if(ok){topicScore++;saveTopicMastery(topicPos,20);document.getElementById('topicFeedback').innerHTML=`<div class="topicFeedback good">✓ Correct — ${q.zh} · ${q.py}</div>`}else{saveTopicMastery(topicPos,-8);document.getElementById('topicFeedback').innerHTML=`<div class="topicFeedback bad">✗ Not quite. Correct: <b>${q.zh}</b> · ${q.py}<br>${q.opts[q.ans]}</div>`}setTimeout(()=>{if(topicQPos<4){topicQPos++;topicAnswered=false;renderTopicQuestion()}else{const m=topicMastery(topicPos);document.getElementById('topicPractice').innerHTML=`<h3>${t.title} complete</h3><div class="resultHero"><div class="resultScore">${topicScore}/5</div><p>${topicScore>=4?'Strong session.':'Keep this unit in your review rotation.'}</p><p>Unit mastery: <b>${m}%</b></p></div><button class="primary" type="button" onclick="startTopic(${topicPos})">Retry unit →</button> <button type="button" onclick="renderTopics()">Back to path</button>`;renderHomeTopics();}},550)}
+function show(id,el){
+ document.querySelectorAll('main section').forEach(x=>x.classList.add('hidden'));
+ document.getElementById(id).classList.remove('hidden');
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+ if(el)el.classList.add('active');
+ if(id==='cards')loadCard(); if(id==='hsk2'){renderH2Words();renderH2Chars();} if(id==='quiz')rcEnter(); if(id==='exam'){buildExam();} if(id==='words')renderWords(); if(id==='characters'){{renderCharacters();nextCharQuiz();}} if(id==='topics'){renderTopics();renderHomeTopics();} updateStats();
+}
+/* ================= FLASHCARDS: spaced repetition (replaces the old "lowest rating first" picker) =================
+   Old bug: the next card was always the lowest-rated card, ties broken by list order, and "Next card" re-ran that
+   without changing anything, so the same early card (吧 / ba) came back forever. Now each card has its own due date. */
+const DAY=864e5;
+let cardQ=[], cardCurrent=-1, cardCaughtUp=false;
+function migrateSrs(){
+ state.srs=state.srs||{};
+ const now=Date.now();
+ Object.entries(state.reviews||{}).forEach(([k,r])=>{
+  if(state.srs[k])return;
+  r=Math.max(0,Math.min(3,Number(r)||0));
+  state.srs[k]={r:[0,1,2,3][r],i:[0,1,3,7][r],e:2.3,d:now+[0,0,1,3][r]*DAY,l:0};
+ });
+}
+function buildCardQueue(){
+ migrateSrs();
+ const now=Date.now(), due=[], fresh=[];
+ vocab.forEach((v,i)=>{const s=state.srs[i];if(!s)fresh.push(i);else if(s.d<=now)due.push(i);});
+ due.sort((a,b)=>state.srs[a].d-state.srs[b].d);
+ const q=[];let f=0;
+ due.forEach((i,n)=>{q.push(i);if((n+1)%3===0&&f<fresh.length)q.push(fresh[f++]);});
+ while(f<fresh.length)q.push(fresh[f++]);
+ cardQ=q;
+}
+function nextIntervalDays(s,n){
+ const r=s?s.r:0,i=s?s.i:0,e=s?s.e:2.3;
+ if(n===0)return 0;
+ if(n===1)return r===0?1:Math.max(1,Math.round(i*1.2));
+ if(n===2)return r===0?1:(r===1?3:Math.max(i+1,Math.round(i*e)));
+ return r===0?3:(r===1?7:Math.max(i+2,Math.round(i*e*1.3)));
+}
+function fmtDays(d){return d<=0?'10 min':d===1?'1 day':d<30?d+' days':Math.round(d/30)+' mo'}
+function fmtMs(ms){const m=Math.max(1,Math.round(ms/60000));if(m<60)return m+' min';const h=Math.round(m/60);if(h<48)return h+' h';return Math.round(h/24)+' days'}
+function requeue(i,gap){cardQ=cardQ.filter(x=>x!==i);cardQ.splice(Math.min(gap,cardQ.length),0,i)}
+function loadCard(){
+ if(cardCurrent>=0){renderCard();return;}
+ migrateSrs();
+ if(!cardQ.length)buildCardQueue();
+ if(!cardQ.length){cardCaughtUp=true;renderCaughtUp();return;}
+ cardCaughtUp=false;
+ cardCurrent=cardQ.shift();
+ renderCard();
+}
+function renderCard(){
+ ci=cardCurrent;revealed=false;cardCaughtUp=false;
+ document.getElementById('cardZh').textContent=vocab[ci][0];
+ document.getElementById('cardPy').textContent='•••••';
+ const en=document.getElementById('cardEn');en.textContent='•••••';en.classList.add('hidden');
+ document.getElementById('ratings').classList.add('hidden');
+ document.getElementById('nextCardBtn').classList.add('hidden');
+ document.getElementById('revealBtn').classList.remove('hidden');
+ document.getElementById('cardHint').textContent='Try to say: meaning → Chinese → pinyin. Then reveal.  (Keys: space = reveal, 1-4 = Again/Hard/Good/Easy)';
+ updateCardInfo();
+ if(document.getElementById('autoSpeak')?.checked)speakZh(vocab[ci][0],false);
+}
+function renderCaughtUp(){
+ cardCurrent=-1;revealed=false;
+ const now=Date.now(),ds=Object.values(state.srs||{}).map(s=>s.d).filter(d=>d>now);
+ document.getElementById('cardZh').textContent='🎉';
+ document.getElementById('cardPy').textContent='All caught up';
+ document.getElementById('cardEn').classList.add('hidden');
+ document.getElementById('ratings').classList.add('hidden');
+ document.getElementById('revealBtn').classList.add('hidden');
+ const b=document.getElementById('nextCardBtn');b.textContent='Study ahead (15 soonest) →';b.classList.remove('hidden');
+ document.getElementById('cardHint').textContent=ds.length?'Nothing due right now. Next card is due in '+fmtMs(Math.min(...ds)-now)+'.':'No cards yet.';
+ updateCardInfo();
+}
+function updateCardInfo(){
+ const now=Date.now();let due=0,fresh=0;
+ vocab.forEach((v,i)=>{const s=state.srs?.[i];if(!s)fresh++;else if(s.d<=now)due++;});
+ const q=cardQ.length+(cardCurrent>=0?1:0);
+ document.getElementById('cardQueueInfo').textContent=`Due ${due} · New ${fresh} · Left this session ${q}`;
+ document.getElementById('cardPos').textContent=cardCurrent>=0?`Card #${cardCurrent+1} of ${vocab.length}`:'';
+ document.getElementById('cardProgFill').style.width=((vocab.length-fresh)/vocab.length*100)+'%';
+}
+function reveal(){
+ if(cardCurrent<0||revealed)return;
+ document.getElementById('cardPy').textContent=vocab[ci][1];
+ const en=document.getElementById('cardEn');en.textContent=vocab[ci][2];en.classList.remove('hidden');
+ const s=state.srs?.[ci];
+ ['Again','Hard','Good','Easy'].forEach((l,n)=>{document.getElementById('rate'+n).textContent=l+' · '+fmtDays(nextIntervalDays(s,n))});
+ document.getElementById('ratings').classList.remove('hidden');
+ document.getElementById('nextCardBtn').textContent='Skip without rating →';
+ document.getElementById('nextCardBtn').classList.remove('hidden');
+ document.getElementById('revealBtn').classList.add('hidden');
+ revealed=true;
+}
+function rate(n){
+ if(!revealed||cardCurrent<0)return;
+ migrateSrs();
+ const i=cardCurrent,now=Date.now();
+ const s=state.srs[i]||{r:0,i:0,e:2.3,d:now,l:0};
+ const days=nextIntervalDays(s,n);
+ if(n===0){s.l=(s.l||0)+1;s.r=0;s.i=0;s.e=Math.max(1.3,s.e-.2);s.d=now+10*60000;}
+ else{if(n===1)s.e=Math.max(1.3,s.e-.15);if(n===3)s.e=Math.min(3,s.e+.15);s.i=days;s.r+=1;s.d=now+days*DAY;}
+ state.srs[i]=s;
+ state.reviews=state.reviews||{};state.reviews[i]=n;
+ state.seen=(state.seen||0)+1;
+ if(n===0)requeue(i,3);else if(n===1&&days<=1)requeue(i,8);
+ cardCurrent=-1;save();loadCard();
+}
+function skipCard(){
+ if(cardCaughtUp||cardCurrent<0){studyAhead();return;}
+ cardQ.push(cardCurrent);cardCurrent=-1;loadCard();
+}
+function studyAhead(){
+ migrateSrs();
+ cardQ=vocab.map((v,i)=>i).filter(i=>state.srs[i]).sort((a,b)=>state.srs[a].d-state.srs[b].d).slice(0,15);
+ cardCurrent=-1;cardCaughtUp=false;loadCard();
+}
+document.addEventListener('keydown',e=>{
+ const sec=document.getElementById('cards');if(!sec||sec.classList.contains('hidden'))return;
+ const tg=e.target,tag=tg&&tg.tagName;
+ if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT')return;
+ if((e.key===' '||e.key==='Enter')){if(tag==='BUTTON')return;if(!revealed&&cardCurrent>=0){e.preventDefault();reveal();}}
+ else if(revealed&&e.key.length===1&&'1234'.includes(e.key)){rate(Number(e.key)-1);}
+});
+
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5)}
+function answerHtml(q){
+  return `<div style="margin-top:10px"><b>${q[1]}</b><br><span class="pinyin" style="display:block;text-align:left;margin-top:4px">${q[2]}</span><div class="small" style="margin-top:6px">Chinese characters are accepted directly; if using pinyin, tone marks/numbers are optional.</div></div>`;
+}
+function stripToneMarks(s){
+  const map={'ā':'a','á':'a','ǎ':'a','à':'a','ē':'e','é':'e','ě':'e','è':'e','ī':'i','í':'i','ǐ':'i','ì':'i','ō':'o','ó':'o','ǒ':'o','ò':'o','ū':'u','ú':'u','ǔ':'u','ù':'u','ǖ':'v','ǘ':'v','ǚ':'v','ǜ':'v'};
+  return s.toLowerCase().replace(/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]/g,c=>map[c]||c);
+}
+function norm(s){return s.replace(/[\s。？！!?，,.'’‘"“”、-]/g,'').toLowerCase()}
+function pinyinKey(s){return stripToneMarks(s).replace(/[1-5]/g,'').replace(/[\s。？！!?，,.'’‘"“”、-]/g,'')}
+function acceptedAnswer(user,q){
+  const raw=(user||'').trim();
+  if(!raw)return false;
+  const u=norm(raw), answer=String(q[1]);
+  // Exact Chinese answer.
+  if(u===norm(answer))return true;
+  // If the target is Chinese, also accept pinyin with tones omitted or replaced by numbers.
+  if(/[\u3400-\u9fff]/.test(answer)) return u===pinyinKey(q[2]);
+  // Pinyin-production question: tones are optional.
+  return u===pinyinKey(answer);
+}
+/* ================= RECALL LAB ================= */
+const RC={mode:'words',len:20,n:0,ok:0,miss:0,streak:0,roundBest:0,retry:[],missed:[],cur:null,checked:false,lastOk:null,overridden:false,hints:0,hintLines:[],recent:[],done:false,timer:null,pool:{}};
+const RC_MODES=[['words','✍️ Words'],['sentences','💬 Sentences'],['pinyin','🔤 Pinyin'],['listen','🎧 Listen'],['mix','🔀 Mixed'],['weak','🎯 Weak spots']];
+const rcEsc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rcIsZh=s=>/[\u3400-\u9fff]/.test(s);
+const rcKey=it=>it.mode+':'+it.ans;
+const rcGet=k=>(state.recall||{})[k];
+function rcBuildPools(){
+ if(RC.pool.words)return;
+ RC.pool.words=vocab.map(v=>({mode:'words',ans:v[0],zh:v[0],py:v[1],en:v[2],tag:v[3]}));
+ const seen=new Set(),sents=[];
+ [...questions,...sentenceBank].forEach(x=>{if(!seen.has(x[1])){seen.add(x[1]);sents.push({mode:'sentences',ans:x[1],zh:x[1],py:x[2],en:x[0],tag:'sentence'});}});
+ RC.pool.sentences=sents;
+ RC.pool.pinyin=vocab.map(v=>({mode:'pinyin',ans:v[1],zh:v[0],py:v[1],en:v[2],tag:v[3]}));
+ RC.pool.listen=[...vocab.map(v=>({mode:'listen',ans:v[0],zh:v[0],py:v[1],en:v[2],tag:v[3]})),...sents.map(s=>({...s,mode:'listen'}))];
+}
+function rcAllItems(){rcBuildPools();return [...RC.pool.words,...RC.pool.sentences,...RC.pool.pinyin,...RC.pool.listen]}
+function rcIsWeak(it){const s=rcGet(rcKey(it));return !!s&&s.m>0&&s.s<3}
+function rcWeight(it){
+ const s=rcGet(rcKey(it));if(!s)return 2;
+ const tot=s.c+s.m,acc=tot?s.c/tot:0;
+ if(s.s>=4&&acc>=.8)return .2;
+ return .35+1.8*(1-acc)+(s.s<2?.6:0);
+}
+function rcPick(pool){
+ const recent=new Set(RC.recent);
+ let cand=pool.filter(it=>!recent.has(rcKey(it)));if(cand.length<3)cand=pool;
+ let sum=0;const ws=cand.map(it=>{const w=rcWeight(it);sum+=w;return w});
+ let r=Math.random()*sum;
+ for(let i=0;i<cand.length;i++){r-=ws[i];if(r<=0)return cand[i];}
+ return cand[cand.length-1];
+}
+/* pinyin helpers: tone numbers -> tone marks, so "ba4ba" can be compared with "bàba" */
+function numToMarks(s){
+ const T={a:'āáǎà',e:'ēéěè',i:'īíǐì',o:'ōóǒò',u:'ūúǔù','ü':'ǖǘǚǜ'};
+ return String(s).toLowerCase().replace(/u:/g,'ü').replace(/v/g,'ü').replace(/([a-zü]+)([1-5])/g,(m,syl,tn)=>{
+  tn=+tn;if(tn===5)return syl;
+  let idx=syl.search(/[ae]/);
+  if(idx<0){const o=syl.indexOf('ou');idx=o>=0?o:-1;}
+  if(idx<0){for(let k=syl.length-1;k>=0;k--){if(/[aeiouü]/.test(syl[k])){idx=k;break;}}}
+  if(idx<0)return syl;
+  return syl.slice(0,idx)+T[syl[idx]][tn-1]+syl.slice(idx+1);
+ });
+}
+const pyMarked=s=>numToMarks(s).replace(/[\s'’\-.,!?。？！，、]/g,'');
+const rcTonesMatch=(raw,py)=>pyMarked(raw)===pyMarked(py);
+const rcPk=s=>pinyinKey(String(s).replace(/u:/gi,'v')).replace(/ü/g,'v');
+function rcSharesMeaning(a,b){
+ const tok=x=>x.toLowerCase().split(/[;,/()]/).map(y=>y.trim().replace(/^to /,'')).filter(y=>y.length>2);
+ const A=tok(a),B=new Set(tok(b));return A.some(x=>B.has(x));
+}
+function rcEvaluate(raw,it){
+ const strict=document.getElementById('rcStrict')?.checked;
+ if(rcIsZh(it.ans)){
+  if(norm(raw)===norm(it.ans))return {ok:true,kind:'exact'};
+  if(!rcIsZh(raw)&&rcPk(raw)&&rcPk(raw)===rcPk(it.py)){
+   if(strict&&!rcTonesMatch(raw,it.py))return {ok:false,kind:'tones'};
+   return {ok:true,kind:'pinyin'};
+  }
+  if(it.mode==='words'){
+   const alt=vocab.find(v=>v[0]!==it.zh&&norm(v[0])===norm(raw)&&rcSharesMeaning(v[2],it.en));
+   if(alt)return {ok:true,kind:'alt',alt};
+  }
+  return {ok:false,kind:'wrong'};
+ }
+ if(rcPk(raw)&&rcPk(raw)===rcPk(it.ans)){
+  const exact=rcTonesMatch(raw,it.ans);
+  if(strict&&!exact)return {ok:false,kind:'tones'};
+  return {ok:true,kind:exact?'exact':'notones'};
+ }
+ return {ok:false,kind:'wrong'};
+}
+function rcDiff(aStr,uStr){
+ const a=[...aStr],u=[...uStr],m=a.length,n=u.length;
+ const dp=Array.from({length:m+1},()=>Array(n+1).fill(0));
+ for(let i=m-1;i>=0;i--)for(let j=n-1;j>=0;j--)dp[i][j]=a[i]===u[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+ const aa=Array(m).fill('bad'),ua=Array(n).fill('bad');let i=0,j=0;
+ while(i<m&&j<n){if(a[i]===u[j]){aa[i]='ok';ua[j]='ok';i++;j++;}else if(dp[i+1][j]>=dp[i][j+1])i++;else j++;}
+ const h=(arr,flags)=>arr.map((c,k)=>`<span class="c ${flags[k]}">${rcEsc(c)}</span>`).join('');
+ return {a:h(a,aa),u:h(u,ua)};
+}
+function rcRenderChips(){
+ const weak=rcAllItems().filter(rcIsWeak).length;
+ document.getElementById('rcModes').innerHTML=RC_MODES.map(([k,l])=>`<button type="button" class="rcChip ${RC.mode===k?'on':''}" onclick="rcSetMode('${k}')">${l}${k==='weak'?`<i>${weak}</i>`:''}</button>`).join('');
+ return weak;
+}
+function rcRenderStats(){
+ const weak=rcRenderChips();
+ document.getElementById('rcStreak').textContent=RC.streak;
+ document.getElementById('rcAcc').textContent=RC.n?Math.round(RC.ok/RC.n*100)+'%':'–';
+ document.getElementById('rcBest').textContent=state.best||0;
+ document.getElementById('rcWeak').textContent=weak;
+ document.getElementById('rcFill').style.width=Math.min(100,RC.n/RC.len*100)+'%';
+ document.getElementById('rcRound').textContent=RC.done?'Round complete':`Question ${Math.min(RC.n+1,RC.len)} of ${RC.len}`;
+ updateStats();
+}
+function rcSetMode(m){RC.mode=m;rcNewRound()}
+function rcNewRound(){
+ clearTimeout(RC.timer);
+ Object.assign(RC,{n:0,ok:0,miss:0,roundBest:0,retry:[],missed:[],done:false,cur:null});
+ loadQ();
+}
+function rcEnter(){
+ const a=document.getElementById('rcAuto'),s=document.getElementById('rcStrict');
+ if(a)a.checked=state.rcAuto!==false;if(s)s.checked=!!state.rcStrict;
+ if(!RC.cur&&!RC.done)loadQ();else rcRenderStats();
+ if(!RC.done)setTimeout(()=>{try{document.getElementById('answer').focus({preventScroll:true})}catch(e){}},30);
+}
+function loadQ(){
+ clearTimeout(RC.timer);rcBuildPools();
+ RC.done=false;
+ document.getElementById('rcSummary').classList.add('hidden');
+ document.getElementById('rcCard').classList.remove('hidden');
+ let it=null;
+ const di=RC.retry.findIndex(r=>r.at<=RC.n);
+ if(di>=0)it=RC.retry.splice(di,1)[0].it;
+ else{
+  let mode=RC.mode,pool;
+  if(mode==='mix'){const r=Math.random();mode=r<.4?'words':r<.6?'sentences':r<.8?'pinyin':'listen';}
+  if(mode==='weak'){pool=rcAllItems().filter(rcIsWeak);if(!pool.length)pool=RC.pool.words;}
+  else pool=RC.pool[mode];
+  it=rcPick(pool);
+ }
+ RC.cur=it;RC.checked=false;RC.lastOk=null;RC.overridden=false;RC.hints=0;RC.hintLines=[];
+ RC.recent.push(rcKey(it));if(RC.recent.length>12)RC.recent.shift();
+ rcRenderQuestion();rcRenderStats();
+}
+function rcRenderQuestion(){
+ const it=RC.cur,P=document.getElementById('qPrompt'),L=document.getElementById('rcLabel'),A=document.getElementById('answer');
+ const f=document.getElementById('qFeedback');f.textContent='';f.className='feedback';
+ const qa=document.getElementById('qAnswer');qa.classList.add('hidden');qa.innerHTML='';qa.dataset.zh=it.zh;
+ document.getElementById('rcHint').innerHTML='';
+ document.getElementById('rcNextRow').classList.add('hidden');
+ ['rcCheckBtn','rcHintBtn','rcGiveBtn'].forEach(id=>document.getElementById(id).disabled=false);
+ document.getElementById('rcCard').classList.remove('rcPop','rcShake');
+ A.value='';A.readOnly=false;
+ const noWeak=RC.mode==='weak'&&!rcAllItems().some(rcIsWeak);
+ if(it.mode==='words'){L.textContent='Write the Chinese · '+it.tag;P.textContent='“'+it.en+'”';A.placeholder='Type the characters (pinyin also accepted)…';}
+ else if(it.mode==='sentences'){L.textContent='Translate into Chinese';P.textContent=it.en;A.placeholder='Type the full sentence…';}
+ else if(it.mode==='pinyin'){L.textContent='Write the pinyin';P.innerHTML=`<div class="rcBig">${rcEsc(it.zh)}</div>`;A.placeholder='e.g. bàba, ba4ba or baba';}
+ else{L.textContent='Listen, then write what you hear';P.innerHTML='<button class="rcPlay speakBtn" onclick="rcPlay()" type="button">🔊 Play again</button>';A.placeholder='Type the characters (or pinyin)…';rcPlay();}
+ if(noWeak)L.textContent='No weak spots yet 🎉 — showing words instead';
+}
+function rcPlay(){if(RC.cur)speakZh(RC.cur.zh,true)}
+function rcHint(){
+ if(!RC.cur||RC.checked||RC.hints>=3)return;
+ const it=RC.cur,chars=[...it.ans.replace(/[。？！，、?!.,\s]/g,'')];RC.hints++;
+ let line='';
+ if(it.mode==='words')line=[`${chars.length} character${chars.length>1?'s':''} · ${it.tag}`,`Pinyin: ${it.py}`,`Starts with ${chars[0]}${'＿'.repeat(chars.length-1)}`][RC.hints-1];
+ else if(it.mode==='sentences')line=[`${chars.length} characters long`,`Starts: ${chars.slice(0,3).join('')}…`,`Pinyin: ${it.py}`][RC.hints-1];
+ else if(it.mode==='pinyin'){const sy=it.ans.trim().split(/\s+/);line=[`${sy.length} syllable${sy.length>1?'s':''} · meaning: ${it.en}`,`Starts with “${it.ans[0]}”`,`First syllable: ${sy[0]}`][RC.hints-1];}
+ else line=[`Meaning: ${it.en}`,`Pinyin: ${it.py}`,`Starts with ${chars[0]}`][RC.hints-1];
+ RC.hintLines.push('💡 '+line);
+ document.getElementById('rcHint').innerHTML=RC.hintLines.map(rcEsc).join('<br>');
+ document.getElementById('answer').focus();
+}
+function checkQ(){
+ if(RC.done||!RC.cur)return;
+ if(RC.checked){nextQ();return;}
+ const raw=document.getElementById('answer').value;
+ if(!raw.trim()){const c=document.getElementById('rcCard');c.classList.remove('rcShake');void c.offsetWidth;c.classList.add('rcShake');return;}
+ rcFinish(rcEvaluate(raw,RC.cur),raw,false);
+}
+function rcGiveUp(){if(RC.done||!RC.cur||RC.checked)return;rcFinish({ok:false,kind:'gaveup'},document.getElementById('answer').value,true)}
+function rcFinish(res,raw,gaveUp){
+ const it=RC.cur,key=rcKey(it);
+ RC.checked=true;RC.n++;RC.lastOk=res.ok;
+ state.recall=state.recall||{};
+ const st=state.recall[key]||(state.recall[key]={c:0,m:0,s:0,t:0});st.t=Date.now();
+ const assisted=RC.hints>0,f=document.getElementById('qFeedback');
+ RC.retry=RC.retry.filter(r=>rcKey(r.it)!==key);
+ let msg='',note='';
+ if(res.ok){
+  RC.ok++;qscore++;
+  if(assisted){st.c+=.5;RC.streak=0;msg='✓ Correct — with a hint';RC.retry.push({it,at:RC.n+6});}
+  else{st.c++;st.s++;RC.streak++;RC.roundBest=Math.max(RC.roundBest,RC.streak);if(RC.streak>(state.best||0))state.best=RC.streak;msg='✓ Clean recall'+(RC.streak>=3?` · 🔥 ${RC.streak} in a row`:'');}
+  if(res.kind==='pinyin')note='You gave the pinyin — now lock in the characters too.';
+  if(res.kind==='notones')note='Correct sounds. Full tones: '+it.ans;
+  if(res.kind==='alt')note=`${res.alt[0]} (${res.alt[1]}) is also a valid answer here.`;
+ }else{
+  RC.miss++;RC.streak=0;st.m++;st.s=0;
+  if(!RC.missed.some(x=>rcKey(x)===key))RC.missed.push(it);
+  RC.retry.push({it,at:RC.n+3});
+  msg=res.kind==='tones'?'✗ Right sounds, wrong tones':gaveUp?'👁 Here’s the answer — it will come back soon':'✗ Not quite — it will come back soon';
+ }
+ state.score=qscore;save();
+ f.className='feedback '+(res.ok?'good':'bad');f.textContent=msg;
+ // answer panel
+ let diff='';
+ if(!res.ok&&!gaveUp&&raw.trim()){
+  const ansIsZh=rcIsZh(it.ans),rawIsZh=rcIsZh(raw);
+  if(ansIsZh&&rawIsZh){const d=rcDiff(norm(it.ans),norm(raw));diff=`<div class="rcDiff"><div><span class="lbl">Answer</span>${d.a}</div><div><span class="lbl">You wrote</span>${d.u}</div></div>`;}
+  else if(!ansIsZh&&!rawIsZh){const d=rcDiff(pyMarked(it.ans),pyMarked(raw));diff=`<div class="rcDiff"><div><span class="lbl">Answer</span>${d.a}</div><div><span class="lbl">You wrote</span>${d.u}</div></div>`;}
+ }
+ const qa=document.getElementById('qAnswer');qa.dataset.zh=it.zh;
+ const big=it.mode==='pinyin'?`<div class="zh">${rcEsc(it.zh)}</div><div class="py"><b>${rcEsc(it.py)}</b></div>`:`<div class="zh ${it.mode==='sentences'||it.mode==='listen'&&it.zh.length>6?'sm':''}">${rcEsc(it.zh)}</div><div class="py">${rcEsc(it.py)}</div>`;
+ qa.innerHTML=`<div class="rcAns ${res.ok?'':'miss'}">${big}<div class="en">${rcEsc(it.en)}</div>${note?`<div class="small" style="margin-top:6px">${rcEsc(note)}</div>`:''}${diff}<div class="row" style="justify-content:flex-start;margin-top:12px"><button class="speakBtn" type="button" onclick="speakCurrentQAnswer()">🔊 Hear it</button>${res.ok?'':'<button type="button" id="rcOverrideBtn" onclick="rcOverride()">✓ My answer was valid</button>'}</div></div>`;
+ qa.classList.remove('hidden');
+ document.getElementById('answer').readOnly=true;
+ ['rcCheckBtn','rcHintBtn','rcGiveBtn'].forEach(id=>document.getElementById(id).disabled=true);
+ document.getElementById('rcNextRow').classList.remove('hidden');
+ document.getElementById('rcNextBtn').textContent=RC.n>=RC.len?'Finish round →':'Next →';
+ const c=document.getElementById('rcCard');c.classList.remove('rcPop','rcShake');void c.offsetWidth;c.classList.add(res.ok?'rcPop':'rcShake');
+ speakZh(it.zh,false);
+ rcRenderStats();
+ if(res.ok&&!assisted&&RC.n<RC.len&&document.getElementById('rcAuto')?.checked){RC.timer=setTimeout(()=>{if(RC.checked&&!RC.done)nextQ();},1500);}
+}
+function rcOverride(){
+ if(!RC.checked||RC.lastOk!==false||RC.overridden)return;
+ const it=RC.cur,key=rcKey(it),st=state.recall[key];
+ clearTimeout(RC.timer);RC.overridden=true;RC.lastOk=true;
+ st.m=Math.max(0,st.m-1);st.c++;st.s=Math.max(st.s,1);
+ RC.miss=Math.max(0,RC.miss-1);RC.ok++;qscore++;RC.streak++;RC.roundBest=Math.max(RC.roundBest,RC.streak);
+ RC.missed=RC.missed.filter(x=>rcKey(x)!==key);RC.retry=RC.retry.filter(r=>rcKey(r.it)!==key);
+ state.score=qscore;save();
+ const f=document.getElementById('qFeedback');f.className='feedback good';f.textContent='✓ Counted as correct';
+ document.querySelector('#qAnswer .rcAns')?.classList.remove('miss');
+ document.getElementById('rcOverrideBtn')?.remove();
+ rcRenderStats();
+}
+function nextQ(){
+ clearTimeout(RC.timer);
+ if(RC.n>=RC.len&&!RC.done){rcSummary();return;}
+ loadQ();
+}
+function rcSummary(){
+ RC.done=true;clearTimeout(RC.timer);
+ const acc=RC.n?Math.round(RC.ok/RC.n*100):0;
+ const verdict=acc>=90?'Excellent — that’s real recall.':acc>=70?'Solid. The misses below are your next targets.':'Good effort. Repetition on the misses will move this fast.';
+ const list=RC.missed.length?RC.missed.map(it=>`<div class="rcMiss"><div><b style="font-size:20px">${rcEsc(it.zh)}</b> <span class="small">${rcEsc(it.py)}</span><div class="small">${rcEsc(it.en)}</div></div><button class="speakBtn" type="button" onclick="speakZh(${rcEsc(JSON.stringify(it.zh)).replace(/&quot;/g,'&#39;')},true)">🔊</button></div>`).join(''):'<p class="good"><b>No misses this round. 🎉</b></p>';
+ document.getElementById('rcCard').classList.add('hidden');
+ const S=document.getElementById('rcSummary');S.classList.remove('hidden');
+ S.innerHTML=`<div class="resultHero"><div class="resultScore">${RC.ok}/${RC.n}</div><p>${verdict}</p></div><div class="grid"><div class="stat"><b>${acc}%</b>accuracy</div><div class="stat"><b>${RC.roundBest}</b>best streak this round</div><div class="stat"><b>${rcAllItems().filter(rcIsWeak).length}</b>weak spots overall</div></div><h3>${RC.missed.length?'Missed this round':'Clean sheet'}</h3>${list}<div class="row"><button class="primary" type="button" onclick="rcNewRound()">Next round →</button>${RC.missed.length?'<button type="button" onclick="rcSetMode(\'weak\')">🎯 Drill weak spots</button>':''}</div>`;
+ rcRenderStats();
+}
+function rcReset(){clearTimeout(RC.timer);Object.assign(RC,{n:0,ok:0,miss:0,streak:0,roundBest:0,retry:[],missed:[],recent:[],cur:null,done:false});}
+document.getElementById('answer').addEventListener('keydown',e=>{
+ if(e.isComposing||e.keyCode===229)return;
+ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();checkQ();}
+ else if(e.key==='Tab'&&!e.shiftKey&&!RC.checked&&RC.hints<3){e.preventDefault();rcHint();}
+});
+['rcAuto','rcStrict'].forEach(id=>document.getElementById(id)?.addEventListener('change',()=>{state.rcAuto=document.getElementById('rcAuto').checked;state.rcStrict=document.getElementById('rcStrict').checked;save();}));
+document.addEventListener('keydown',e=>{
+ const q=document.getElementById('quiz');if(!q||q.classList.contains('hidden'))return;
+ if(e.key==='Enter'&&e.target===document.body){if(RC.done)rcNewRound();else if(RC.checked)nextQ();}
+});
+
+
+let examSet=[], examPos=0, examScore=0, examAnswered=false;
+let examHistory=[];
+function buildExam(){
+  const all=testBank.map((q,i)=>({q,i}));
+  let pool=all.filter(x=>!examHistory.includes(x.i));
+  if(pool.length<30){examHistory=[];pool=all;}
+  const rec=shuffle(pool.filter(x=>x.q[3]==='mc')).slice(0,15);
+  const prod=shuffle(pool.filter(x=>x.q[3]==='prod')).slice(0,15);
+  let chosen=rec.concat(prod);
+  if(chosen.length<30){
+    const used=new Set(chosen.map(x=>x.i));
+    chosen=chosen.concat(shuffle(pool.filter(x=>!used.has(x.i))).slice(0,30-chosen.length));
+  }
+  examSet=shuffle(chosen).map(x=>x.q);
+  chosen.forEach(x=>examHistory.push(x.i));
+  examPos=0; examScore=0; examAnswered=false;
+  renderExamQuestion();
+}
+function renderExamQuestion(){
+  const q=examSet[examPos];
+  document.getElementById('examScore').textContent=examScore;
+  document.getElementById('examProgress').textContent=`Question ${examPos+1} / ${examSet.length}`;
+  document.getElementById('examPrompt').textContent=q[0];
+  const area=document.getElementById('examArea');
+  if(q[3]==="mc"){
+    const opts=shuffle(q[4]);
+    area.innerHTML='';
+    opts.forEach(o=>{
+      const b=document.createElement('button');
+      b.type='button'; b.className='examOpt'; b.textContent=o;
+      b.addEventListener('click',()=>answerMC(o));
+      area.appendChild(b);
+    });
+  } else {
+    area.innerHTML=`<input id="examAnswer" placeholder="Type Chinese or pinyin — tones optional..." autocomplete="off">
+      <div class="row"><button type="button" class="primary" id="examCheckBtn">Check</button></div>`;
+    document.getElementById('examCheckBtn').addEventListener('click',answerProd);
+    document.getElementById('examAnswer').addEventListener('keydown',e=>{if(e.key==='Enter')answerProd()});
+  }
+  if(document.getElementById('autoSpeak')?.checked){ const txt=q[0]||''; /[\u3400-\u9fff]/.test(txt)?speakZh(txt,false):speakEn(txt,false); }
+  document.getElementById('examFeedback').innerHTML='';
+  document.getElementById('examFeedback').className='feedback';
+  document.getElementById('examNext').classList.add('hidden');
+  document.getElementById('newExam').classList.add('hidden');
+  examAnswered=false;
+}
+function answerMC(choice){
+  if(examAnswered)return;
+  examAnswered=true;
+  const q=examSet[examPos], ok=norm(choice)===norm(q[1]);
+  finishExamQuestion(ok,q);
+}
+function answerProd(){
+  if(examAnswered)return;
+  const q=examSet[examPos], a=document.getElementById('examAnswer').value;
+  const ok=acceptedAnswer(a,q);
+  examAnswered=true;
+  finishExamQuestion(ok,q);
+}
+function finishExamQuestion(ok,q){
+  if(ok)examScore++;
+  document.getElementById('examScore').textContent=examScore;
+  const f=document.getElementById('examFeedback');
+  f.className='feedback '+(ok?'good':'bad');
+  f.innerHTML=(ok?'✓ Correct':'✗ Not quite') + answerHtml(q); if(document.getElementById('autoSpeak')?.checked)speakZh(q[1],false);
+  document.getElementById('examNext').classList.remove('hidden');
+}
+function nextExam(){
+  if(!examAnswered)return;
+  if(examPos>=examSet.length-1){
+    const pass=examScore>=24;
+    document.getElementById('examFeedback').innerHTML += `<div style="margin-top:14px"><b>Mock finished: ${examScore}/${examSet.length} — ${pass?'PASS 🎉':'Keep training and retry.'}</b></div>`;
+    document.getElementById('examNext').classList.add('hidden');
+    document.getElementById('newExam').classList.remove('hidden');
+    examSet=[];
+    return;
+  }
+  examPos++;
+  renderExamQuestion();
+}
+
+function resetProgress(){
+ if(confirm('Reset all HSK 1 progress on this device?')){
+   state={reviews:{},srs:{},recall:{},seen:0,score:0,best:0}; qscore=0; cardQ=[]; cardCurrent=-1; rcReset(); save(); loadCard(); loadQ(); updateStats();
+ }
+}
+
+// ---- Voice pack: device-native Mandarin/English TTS ----
+const voicePrefs={zh:'',en:'',rate:0.78,auto:true};
+let availableVoices=[];
+function loadVoicePrefs(){
+  try{const x=JSON.parse(localStorage.getItem('hsk1_voice_prefs')||'null');if(x)Object.assign(voicePrefs,x);}catch(e){}
+  const auto=document.getElementById('autoSpeak'), rate=document.getElementById('voiceRate');
+  if(auto)auto.checked=voicePrefs.auto!==false;
+  if(rate)rate.value=voicePrefs.rate||0.78;
+}
+function saveVoicePrefs(){
+  const auto=document.getElementById('autoSpeak'), rate=document.getElementById('voiceRate');
+  if(auto)voicePrefs.auto=auto.checked;if(rate)voicePrefs.rate=parseFloat(rate.value)||0.78;
+  localStorage.setItem('hsk1_voice_prefs',JSON.stringify(voicePrefs));
+}
+function voiceScore(v,kind){
+  const lang=(v.lang||'').toLowerCase(), name=(v.name||'').toLowerCase();
+  if(kind==='zh'){
+    let s=0;if(lang==='zh-cn')s+=100;if(lang.startsWith('zh'))s+=70;if(lang.includes('cmn'))s+=30;
+    if(/ting.?ting|mei.?jia|sin.?ji|li.?mu|mandarin|chinese/.test(name))s+=15;if(v.localService)s+=4;return s;
+  }
+  let s=0;if(lang==='en-gb')s+=100;if(lang.startsWith('en'))s+=70;if(/daniel|serena|alex|kate|moira/.test(name))s+=10;if(v.localService)s+=4;return s;
+}
+function populateVoices(){
+  if(!('speechSynthesis' in window)){
+    document.getElementById('voiceStatus').textContent='Speech synthesis is not available in this browser.';return;
+  }
+  availableVoices=speechSynthesis.getVoices()||[];
+  const zh=document.getElementById('zhVoice'), en=document.getElementById('enVoice');
+  if(!zh||!en)return;
+  const zhs=availableVoices.filter(v=>(v.lang||'').toLowerCase().startsWith('zh')).sort((a,b)=>voiceScore(b,'zh')-voiceScore(a,'zh'));
+  const ens=availableVoices.filter(v=>(v.lang||'').toLowerCase().startsWith('en')).sort((a,b)=>voiceScore(b,'en')-voiceScore(a,'en'));
+  zh.innerHTML='';en.innerHTML='';
+  (zhs.length?zhs:availableVoices.slice()).forEach((v,i)=>{const o=document.createElement('option');o.value=v.name+'|'+v.lang;o.textContent=v.name+' ('+v.lang+')'+(i===0?' ★ Recommended':'');zh.appendChild(o)});
+  (ens.length?ens:availableVoices.slice()).forEach((v,i)=>{const o=document.createElement('option');o.value=v.name+'|'+v.lang;o.textContent=v.name+' ('+v.lang+')'+(i===0?' ★ Recommended':'');en.appendChild(o)});
+  if(voicePrefs.zh&&[...zh.options].some(o=>o.value===voicePrefs.zh))zh.value=voicePrefs.zh;else if(zh.options.length)voicePrefs.zh=zh.value;
+  if(voicePrefs.en&&[...en.options].some(o=>o.value===voicePrefs.en))en.value=voicePrefs.en;else if(en.options.length)voicePrefs.en=en.value;
+  document.getElementById('voiceStatus').textContent=zhs.length?'✓ Mandarin voice ready — '+zhs[0].name:'No Mandarin voice found. Install a Chinese voice on your device, then reload.';
+}
+function selectedVoice(kind){
+  const id=kind==='zh'?'zhVoice':'enVoice', val=document.getElementById(id)?.value||'';
+  const [name,lang]=val.split('|');
+  return availableVoices.find(v=>v.name===name&&v.lang===lang)||availableVoices.find(v=>v.name===name)||null;
+}
+function speak(text,kind='zh',force=false){
+  if(!text||!('speechSynthesis' in window))return;
+  saveVoicePrefs();if(!force&&voicePrefs.auto===false)return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(String(text));
+  u.lang=kind==='zh'?'zh-CN':'en-GB';u.rate=voicePrefs.rate||0.78;u.pitch=1;u.volume=1;
+  const v=selectedVoice(kind);if(v)u.voice=v;
+  speechSynthesis.speak(u);
+}
+function speakZh(text,force=true){speak(text,'zh',force)}
+function speakChinese(text){speakZh(text,true)}
+function speakEn(text,force=true){speak(text,'en',force)}
+function testVoice(){speakZh('你好。很高兴认识你。',true)}
+function speakCurrentQAnswer(){const el=document.getElementById('qAnswer');if(el)speakZh(el.dataset.zh||'',true)}
+function speakCurrentExamAnswer(){const q=examSet[examPos];if(q)speakZh(q[1],true)}
+function voiceAnswerHook(zh){const el=document.getElementById('qAnswer');if(el){el.dataset.zh=zh||'';}}
+
+loadVoicePrefs();
+if('speechSynthesis' in window){populateVoices();speechSynthesis.onvoiceschanged=populateVoices;}
+['zhVoice','enVoice','voiceRate','autoSpeak'].forEach(id=>document.getElementById(id)?.addEventListener('change',saveVoicePrefs));
+
+
+
+/* ================= REAL HSK 1 EXAM SIMULATION =================
+   Based on the published classic HSK 1 structure: 40 items, 20 listening,
+   20 reading, four parts of five in each section, 200 points, pass mark 120.
+   Original questions only; no past-paper text is reproduced. */
+const realExamBank = [
+  // LISTENING PART 1 — word/phrase + picture, judge match
+  {sec:'Listening',part:1,type:'Picture judgement',audio:'苹果',prompt:'Does the picture match what you hear?',visual:'🍎',opts:['Yes','No'],ans:0,why:'苹果 means apple.'},
+  {sec:'Listening',part:1,type:'Picture judgement',audio:'医生',prompt:'Does the picture match what you hear?',visual:'👨‍⚕️',opts:['Yes','No'],ans:0,why:'医生 means doctor.'},
+  {sec:'Listening',part:1,type:'Picture judgement',audio:'茶',prompt:'Does the picture match what you hear?',visual:'☕',opts:['Yes','No'],ans:0,why:'茶 means tea.'},
+  {sec:'Listening',part:1,type:'Picture judgement',audio:'学校',prompt:'Does the picture match what you hear?',visual:'🏫',opts:['Yes','No'],ans:0,why:'学校 means school.'},
+  {sec:'Listening',part:1,type:'Picture judgement',audio:'钱',prompt:'Does the picture match what you hear?',visual:'🏠',opts:['Yes','No'],ans:1,why:'钱 means money; the picture shows a house.'},
+  // LISTENING PART 2 — sentence + 3 picture choices
+  {sec:'Listening',part:2,type:'Sentence-picture',audio:'我喝茶。',prompt:'Choose the picture that matches.',visualChoices:[['A','☕'],['B','📚'],['C','🍎']],opts:['A','B','C'],ans:0,why:'我喝茶 means I drink tea.'},
+  {sec:'Listening',part:2,type:'Sentence-picture',audio:'他在医院工作。',prompt:'Choose the picture that matches.',visualChoices:[['A','🏫'],['B','🏥'],['C','🏠']],opts:['A','B','C'],ans:1,why:'医院 is hospital and 工作 means work.'},
+  {sec:'Listening',part:2,type:'Sentence-picture',audio:'她有三个苹果。',prompt:'Choose the picture that matches.',visualChoices:[['A','🍎🍎🍎'],['B','🍵🍵🍵'],['C','📚📚📚']],opts:['A','B','C'],ans:0,why:'三个苹果 means three apples.'},
+  {sec:'Listening',part:2,type:'Sentence-picture',audio:'明天我去学校。',prompt:'Choose the picture that matches.',visualChoices:[['A','🏫'],['B','🏥'],['C','🏠']],opts:['A','B','C'],ans:0,why:'学校 is school.'},
+  {sec:'Listening',part:2,type:'Sentence-picture',audio:'他很累，在家休息。',prompt:'Choose the picture that matches.',visualChoices:[['A','🏃'],['B','🛏️'],['C','🏫']],opts:['A','B','C'],ans:1,why:'很累 and 休息 indicate resting at home.'},
+  // LISTENING PART 3 — dialogue + picture
+  {sec:'Listening',part:3,type:'Dialogue-picture',audio:'女：你喝什么？男：我喝茶。',prompt:'Choose the picture that matches.',visualChoices:[['A','☕'],['B','🍎'],['C','📱']],opts:['A','B','C'],ans:0,why:'He says he drinks tea.'},
+  {sec:'Listening',part:3,type:'Dialogue-picture',audio:'男：你在哪儿工作？女：我在学校工作。',prompt:'Choose the picture that matches.',visualChoices:[['A','🏥'],['B','🏫'],['C','🏠']],opts:['A','B','C'],ans:1,why:'She works at 学校.'},
+  {sec:'Listening',part:3,type:'Dialogue-picture',audio:'女：今天冷吗？男：很冷。',prompt:'Choose the picture that matches.',visualChoices:[['A','☀️🥵'],['B','❄️🥶'],['C','🌸']],opts:['A','B','C'],ans:1,why:'他说很冷 — it is very cold.'},
+  {sec:'Listening',part:3,type:'Dialogue-picture',audio:'男：这本书多少钱？女：十块钱。',prompt:'Choose the picture that matches.',visualChoices:[['A','📚💰'],['B','🍵'],['C','🏥']],opts:['A','B','C'],ans:0,why:'The dialogue is about a book and its price.'},
+  {sec:'Listening',part:3,type:'Dialogue-picture',audio:'女：你认识那个医生吗？男：认识。',prompt:'Choose the picture that matches.',visualChoices:[['A','👨‍⚕️'],['B','👩‍🏫'],['C','👨‍🎓']],opts:['A','B','C'],ans:0,why:'医生 means doctor.'},
+  // LISTENING PART 4 — statement + question, 3 replies
+  {sec:'Listening',part:4,type:'Question-answer',audio:'男：小王明天去北京。女：小王明天去哪儿？',prompt:'Choose the best answer.',opts:['北京。','医院。','今天。'],ans:0,why:'去哪儿 asks where; the statement says 北京.'},
+  {sec:'Listening',part:4,type:'Question-answer',audio:'女：我有四口人。男：你家有几口人？',prompt:'Choose the best answer.',opts:['四口人。','四本书。','四个苹果。'],ans:0,why:'几口人 asks how many people are in the family.'},
+  {sec:'Listening',part:4,type:'Question-answer',audio:'男：这个苹果很便宜。女：这个苹果怎么样？',prompt:'Choose the best answer.',opts:['很便宜。','在学校。','明天。'],ans:0,why:'怎么样 asks how something is; it is cheap.'},
+  {sec:'Listening',part:4,type:'Question-answer',audio:'女：我姐姐十八岁。男：你姐姐多大？',prompt:'Choose the best answer.',opts:['十八岁。','十八本。','十八口。'],ans:0,why:'多大 asks age.'},
+  {sec:'Listening',part:4,type:'Question-answer',audio:'男：我今天很累。女：你今天怎么样？',prompt:'Choose the best answer.',opts:['很累。','在北京。','三个人。'],ans:0,why:'怎么样 asks how you are; he says he is tired.'},
+
+  // READING PART 1 — word + picture, true/false
+  {sec:'Reading',part:1,type:'Picture judgement',text:'苹果',py:'píngguǒ',visual:'🍎',opts:['Yes','No'],ans:0,why:'苹果 matches the apple picture.'},
+  {sec:'Reading',part:1,type:'Picture judgement',text:'医生',py:'yīshēng',visual:'🏫',opts:['Yes','No'],ans:1,why:'医生 means doctor, not school.'},
+  {sec:'Reading',part:1,type:'Picture judgement',text:'茶',py:'chá',visual:'☕',opts:['Yes','No'],ans:0,why:'茶 means tea.'},
+  {sec:'Reading',part:1,type:'Picture judgement',text:'医院',py:'yīyuàn',visual:'🏥',opts:['Yes','No'],ans:0,why:'医院 means hospital.'},
+  {sec:'Reading',part:1,type:'Picture judgement',text:'书',py:'shū',visual:'🍎',opts:['Yes','No'],ans:1,why:'书 means book, not apple.'},
+  // READING PART 2 — sentence + picture
+  {sec:'Reading',part:2,type:'Sentence-picture',text:'我喝茶。',py:'wǒ hē chá',prompt:'Choose the matching picture.',visualChoices:[['A','☕'],['B','🍎'],['C','📚']],opts:['A','B','C'],ans:0,why:'喝茶 means drink tea.'},
+  {sec:'Reading',part:2,type:'Sentence-picture',text:'他在医院。',py:'tā zài yīyuàn',prompt:'Choose the matching picture.',visualChoices:[['A','🏠'],['B','🏥'],['C','🏫']],opts:['A','B','C'],ans:1,why:'医院 is hospital.'},
+  {sec:'Reading',part:2,type:'Sentence-picture',text:'那是我的学校。',py:'nà shì wǒ de xuéxiào',prompt:'Choose the matching picture.',visualChoices:[['A','🏥'],['B','🏫'],['C','🍵']],opts:['A','B','C'],ans:1,why:'学校 is school.'},
+  {sec:'Reading',part:2,type:'Sentence-picture',text:'我有两个苹果。',py:'wǒ yǒu liǎng ge píngguǒ',prompt:'Choose the matching picture.',visualChoices:[['A','🍎🍎'],['B','🍎🍎🍎'],['C','📚📚']],opts:['A','B','C'],ans:0,why:'两个苹果 means two apples.'},
+  {sec:'Reading',part:2,type:'Sentence-picture',text:'今天很冷。',py:'jīntiān hěn lěng',prompt:'Choose the matching picture.',visualChoices:[['A','❄️🥶'],['B','☀️🥵'],['C','🌧️']],opts:['A','B','C'],ans:0,why:'冷 means cold.'},
+  // READING PART 3 — match question to answer
+  {sec:'Reading',part:3,type:'Question-answer',text:'你叫什么名字？',py:'nǐ jiào shénme míngzi',prompt:'Choose the best answer.',opts:['我叫王明。','我在医院。','我十八岁。'],ans:0,why:'叫什么名字 asks someone’s name.'},
+  {sec:'Reading',part:3,type:'Question-answer',text:'你在哪儿学习？',py:'nǐ zài nǎr xuéxí',prompt:'Choose the best answer.',opts:['我在学校学习。','我喝茶。','明天很冷。'],ans:0,why:'在哪儿 asks where; 学校 is the place.'},
+  {sec:'Reading',part:3,type:'Question-answer',text:'这个多少钱？',py:'zhè ge duōshao qián',prompt:'Choose the best answer.',opts:['十块钱。','我很累。','在北京。'],ans:0,why:'多少钱 asks the price.'},
+  {sec:'Reading',part:3,type:'Question-answer',text:'你认识李老师吗？',py:'nǐ rènshi Lǐ lǎoshī ma',prompt:'Choose the best answer.',opts:['认识。','十块钱。','明天。'],ans:0,why:'认识 is used for knowing a person.'},
+  {sec:'Reading',part:3,type:'Question-answer',text:'你家有几口人？',py:'nǐ jiā yǒu jǐ kǒu rén',prompt:'Choose the best answer.',opts:['三口人。','三本书。','三岁。'],ans:0,why:'几口人 asks the number of people in a family.'},
+  // READING PART 4 — fill blank
+  {sec:'Reading',part:4,type:'Gap fill',text:'我___北京工作。',py:'wǒ ___ Běijīng gōngzuò',prompt:'Choose the word that completes the sentence.',opts:['在','是','很'],ans:0,why:'Location 在 goes before the verb: 我在北京工作。'},
+  {sec:'Reading',part:4,type:'Gap fill',text:'今天___冷。',py:'jīntiān ___ lěng',prompt:'Choose the word that completes the sentence.',opts:['很','是','在'],ans:0,why:'Adjectives commonly take 很: 今天很冷。'},
+  {sec:'Reading',part:4,type:'Gap fill',text:'我有两___书。',py:'wǒ yǒu liǎng ___ shū',prompt:'Choose the word that completes the sentence.',opts:['本','口','岁'],ans:0,why:'本 is the measure word for books.'},
+  {sec:'Reading',part:4,type:'Gap fill',text:'他不___茶。',py:'tā bù ___ chá',prompt:'Choose the word that completes the sentence.',opts:['喝','钱','医院'],ans:0,why:'喝 means drink: 他不喝茶。'},
+  {sec:'Reading',part:4,type:'Gap fill',text:'我___知道。',py:'wǒ ___ zhīdào',prompt:'Choose the word that completes the sentence.',opts:['不','是','在'],ans:0,why:'不 negates the verb 知道.'}
+];
+
+let realPos=0, realAnswers=[], realStarted=0, realTimerId=null, realAudioPlays=0, realAudioBusy=false, realCompleted=false;
+function realShuffle(a){return a.slice().sort(()=>Math.random()-0.5)}
+function startRealExam(){
+  realPos=0; realAnswers=Array(40).fill(null); realStarted=Date.now(); realCompleted=false; realAudioPlays=0; realAudioBusy=false;
+  document.getElementById('realIntro').classList.add('hidden');
+  document.getElementById('realResults').classList.add('hidden');
+  document.getElementById('realExamBody').classList.remove('hidden');
+  clearInterval(realTimerId); realTimerId=setInterval(updateRealTimer,1000); updateRealTimer(); renderRealQuestion();
+}
+function updateRealTimer(){
+  if(!realStarted)return;
+  const elapsed=Math.floor((Date.now()-realStarted)/1000), left=Math.max(0,40*60-elapsed);
+  const m=String(Math.floor(left/60)).padStart(2,'0'), sec=String(left%60).padStart(2,'0');
+  document.getElementById('realTimer').textContent=m+':'+sec;
+  if(left===0 && !realCompleted){finishRealExam(true)}
+}
+function renderRealQuestion(){
+  const q=realExamBank[realPos];
+  document.getElementById('realProgress').textContent=`Question ${realPos+1} / 40`;
+  document.getElementById('realPartLabel').textContent=`${q.sec} · Part ${q.part} · ${q.type}`;
+  const prompt=document.getElementById('realPrompt');
+  if(q.sec==='Listening') prompt.textContent=q.prompt;
+  else prompt.innerHTML=`<div class="big">${q.text}</div><div class="pinyin">${q.py}</div><div class="small">${q.prompt}</div>`;
+  const vis=document.getElementById('realVisual'); vis.innerHTML='';
+  if(q.visual)vis.innerHTML=`<div class="pictureCard"><div class="picture">${q.visual}</div></div>`;
+  if(q.visualChoices)vis.innerHTML=q.visualChoices.map(x=>`<div class="pictureCard"><div class="picture">${x[1]}</div><b>${x[0]}</b></div>`).join('');
+  const opts=document.getElementById('realOptions'); opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button'); b.type='button'; b.className='realOpt'; b.textContent=`${String.fromCharCode(65+i)}. ${o}`;
+    if(realAnswers[realPos]===i)b.classList.add('selected');
+    b.onclick=()=>selectRealAnswer(i); opts.appendChild(b);
+  });
+  const audio=document.getElementById('realAudioControls');
+  if(q.sec==='Listening'){
+    audio.classList.remove('hidden'); realAudioPlays=0; realAudioBusy=false;
+    document.getElementById('realPlay').disabled=false; document.getElementById('realPlay').textContent='🔊 Play audio (2 plays)'; document.getElementById('realPlayCount').textContent='';
+  }else audio.classList.add('hidden');
+  document.getElementById('realPrev').disabled=realPos===0;
+  document.getElementById('realNext').textContent=realPos===39?'Submit exam':'Next →';
+}
+function selectRealAnswer(i){realAnswers[realPos]=i; [...document.querySelectorAll('.realOpt')].forEach((b,n)=>b.classList.toggle('selected',n===i));}
+function realPrev(){speechSynthesis.cancel();if(realPos>0){realPos--;renderRealQuestion()}}
+function realNext(){speechSynthesis.cancel();
+  if(realPos===39){finishRealExam(false);return}
+  realPos++;renderRealQuestion();
+}
+function playRealAudio(){
+  const q=realExamBank[realPos]; if(q.sec!=='Listening'||realAudioBusy||realAudioPlays>=2)return;
+  realAudioBusy=true; realAudioPlays++;
+  const btn=document.getElementById('realPlay'); btn.disabled=true; document.getElementById('realPlayCount').textContent=`Play ${realAudioPlays} of 2`;
+  const u=new SpeechSynthesisUtterance(q.audio); u.lang='zh-CN'; u.rate=Math.min(0.82,parseFloat(voicePrefs.rate||0.78));
+  const voices=speechSynthesis.getVoices(); const v=voices.find(x=>/^zh(-|_)?CN/i.test(x.lang))||voices.find(x=>/^zh/i.test(x.lang)); if(v)u.voice=v;
+  u.onend=()=>{realAudioBusy=false;if(realAudioPlays<2){setTimeout(()=>playRealAudio(),450)}else{btn.disabled=false;btn.textContent='🔊 Audio finished (2 plays)'}};
+  u.onerror=()=>{realAudioBusy=false;btn.disabled=false}; speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+function finishRealExam(auto){
+  if(realCompleted)return; realCompleted=true; clearInterval(realTimerId); speechSynthesis.cancel();
+  let listening=0, reading=0; const missed=[]; const part={};
+  realExamBank.forEach((q,i)=>{const ok=realAnswers[i]===q.ans; if(ok){if(q.sec==='Listening')listening++;else reading++;}else missed.push({...q,index:i,chosen:realAnswers[i]}); const key=q.sec+'|'+q.part; part[key]??={correct:0,total:0}; part[key].total++; if(ok)part[key].correct++;});
+  const total=listening+reading, score=total*5, pass=score>=120, elapsed=Math.floor((Date.now()-realStarted)/1000); 
+  const mins=Math.floor(elapsed/60), secs=String(elapsed%60).padStart(2,'0');
+  const weak=Object.entries(part).map(([k,v])=>({k,p:v.correct/v.total})).sort((a,b)=>a.p-b.p);
+  const diagnosis=weak.map(x=>{const [sec,partNo]=x.k.split('|'); return `<div class="diagRow"><b>${sec} Part ${partNo}</b><span>${Math.round(x.p*100)}%</span></div>`}).join('');
+  const mistakes=missed.length?missed.map(q=>`<div class="mistake"><b>Q${q.index+1} · ${q.sec} Part ${q.part}</b><br>${q.text||q.audio}<br><span class="small">Correct: ${q.opts[q.ans]}${q.py?' · '+q.py:''}</span><br><span class="small">${q.why}</span></div>`).join(''):'<p>Perfect score — no mistakes to review.</p>';
+  document.getElementById('realExamBody').classList.add('hidden');
+  const r=document.getElementById('realResults'); r.classList.remove('hidden');
+  r.innerHTML=`<div class="resultHero"><div class="resultScore">${score}/200</div><h2>${pass?'PASS THRESHOLD MET 🎉':'PASS THRESHOLD NOT MET'}</h2><p>${total}/40 correct · ${auto?'Time expired.':'Completed in '+mins+':'+secs+'.'}</p><p class="small">The published HSK 1 pass threshold is 120/200. This simulation can indicate readiness, but it cannot guarantee a real-exam result.</p></div>
+  <div class="grid2"><div class="stat"><b>${listening*5}/100</b>Listening</div><div class="stat"><b>${reading*5}/100</b>Reading</div></div>
+  <h3>Diagnostic by part</h3>${diagnosis}
+  <h3>What to study next</h3><p>${weak[0]&&weak[0].p<0.8?'Your weakest area is '+weak[0].k.replace('|',' Part ')+'. Repeat that format, then retake the full exam.':'Your part-by-part accuracy is strong. Retake under strict conditions to confirm consistency.'}</p>
+  <details><summary><b>Review ${missed.length} mistake${missed.length===1?'':'s'}</b></summary>${mistakes}</details>
+  <div class="row" style="margin-top:18px"><button class="primary" type="button" onclick="startRealExam()">Retake Real Exam</button><button type="button" onclick="show('quiz',document.querySelector('.tab:nth-child(3)'))">Targeted Practice</button></div>`;
+}
+
+
+/* ================= HSK 3.0 LEVEL 1 READINESS SIMULATION =================
+   Based on CTI's published new-HSK framework and sample-format descriptions.
+   Level 1 remains 20 Listening + 20 Reading, ~40 minutes, no writing section.
+   Original items only. */
+const h30Bank = [
+  // Listening Part 1: short sentence -> choose matching picture
+  {sec:'Listening',part:1,type:'Sentence → picture',audio:'他在喝水。',prompt:'Choose the picture that matches what you hear.',visualChoices:[['A','💧🥤'],['B','📚'],['C','🏫']],opts:['A','B','C'],ans:0,why:'喝水 means drink water.'},
+  {sec:'Listening',part:1,type:'Sentence → picture',audio:'她在看书。',prompt:'Choose the picture that matches what you hear.',visualChoices:[['A','🍎'],['B','📖'],['C','🚗']],opts:['A','B','C'],ans:1,why:'看书 means read a book.'},
+  {sec:'Listening',part:1,type:'Sentence → picture',audio:'今天很热。',prompt:'Choose the picture that matches what you hear.',visualChoices:[['A','🥶❄️'],['B','🥵☀️'],['C','☔']],opts:['A','B','C'],ans:1,why:'热 means hot.'},
+  {sec:'Listening',part:1,type:'Sentence → picture',audio:'他坐在椅子上。',prompt:'Choose the picture that matches what you hear.',visualChoices:[['A','🪑🧍'],['B','🪑🧑'],['C','🛏️']],opts:['A','B','C'],ans:1,why:'坐在椅子上 means sit on a chair.'},
+  {sec:'Listening',part:1,type:'Sentence → picture',audio:'我有两本书。',prompt:'Choose the picture that matches what you hear.',visualChoices:[['A','📚📚'],['B','🍎🍎'],['C','☕☕']],opts:['A','B','C'],ans:0,why:'两本书 means two books.'},
+  // Listening Part 2: NEW-style question -> answer
+  {sec:'Listening',part:2,type:'Question → answer',audio:'你叫什么名字？',prompt:'Choose the answer.',opts:['我叫王明。','我在北京。','我喝茶。'],ans:0,why:'叫什么名字 asks for a name.'},
+  {sec:'Listening',part:2,type:'Question → answer',audio:'你在哪儿工作？',prompt:'Choose the answer.',opts:['我二十三岁。','我在医院工作。','我很累。'],ans:1,why:'在哪儿 asks for a place; 工作 means work.'},
+  {sec:'Listening',part:2,type:'Question → answer',audio:'今天星期几？',prompt:'Choose the answer.',opts:['今天星期三。','今天很冷。','三个人。'],ans:0,why:'星期几 asks what day of the week it is.'},
+  {sec:'Listening',part:2,type:'Question → answer',audio:'你想喝什么？',prompt:'Choose the answer.',opts:['我想喝茶。','我在学校。','我十八岁。'],ans:0,why:'想喝什么 asks what someone wants to drink.'},
+  {sec:'Listening',part:2,type:'Question → answer',audio:'这个多少钱？',prompt:'Choose the answer.',opts:['十块钱。','在桌子上。','明天。'],ans:0,why:'多少钱 asks the price.'},
+  // Listening Part 3: dialogue -> picture
+  {sec:'Listening',part:3,type:'Dialogue → picture',audio:'男：你去哪儿？女：我去学校。',prompt:'Choose the picture that matches.',visualChoices:[['A','🏥'],['B','🏫'],['C','🏠']],opts:['A','B','C'],ans:1,why:'她说去学校。'},
+  {sec:'Listening',part:3,type:'Dialogue → picture',audio:'女：你买什么？男：我买三个苹果。',prompt:'Choose the picture that matches.',visualChoices:[['A','🍎🍎🍎'],['B','📚📚📚'],['C','☕☕☕']],opts:['A','B','C'],ans:0,why:'三个苹果 means three apples.'},
+  {sec:'Listening',part:3,type:'Dialogue → picture',audio:'男：你怎么了？女：我有点儿累。',prompt:'Choose the picture that matches.',visualChoices:[['A','🏃'],['B','😴🛏️'],['C','🍜']],opts:['A','B','C'],ans:1,why:'累 means tired; the picture shows resting.'},
+  {sec:'Listening',part:3,type:'Dialogue → picture',audio:'女：外面冷吗？男：很冷。',prompt:'Choose the picture that matches.',visualChoices:[['A','☀️🥵'],['B','❄️🥶'],['C','🌸']],opts:['A','B','C'],ans:1,why:'冷 means cold.'},
+  {sec:'Listening',part:3,type:'Dialogue → picture',audio:'男：你住在哪儿？女：我住在北京。',prompt:'Choose the picture that matches.',visualChoices:[['A','🏙️ Beijing'],['B','🏝️'],['C','🏔️']],opts:['A','B','C'],ans:0,why:'住在北京 means live in Beijing.'},
+  // Listening Part 4: question -> 3 answers
+  {sec:'Listening',part:4,type:'Question → three answers',audio:'男：你家有几口人？',prompt:'Choose the correct answer.',opts:['我家有四口人。','我家在北京。','我家很大。'],ans:0,why:'几口人 asks how many people are in the household.'},
+  {sec:'Listening',part:4,type:'Question → three answers',audio:'女：你认识那个老师吗？',prompt:'Choose the correct answer.',opts:['认识。','十块钱。','明天。'],ans:0,why:'认识 is used for knowing a person.'},
+  {sec:'Listening',part:4,type:'Question → three answers',audio:'男：你什么时候去学校？',prompt:'Choose the correct answer.',opts:['明天。','在学校。','很便宜。'],ans:0,why:'什么时候 asks when.'},
+  {sec:'Listening',part:4,type:'Question → three answers',audio:'女：你觉得中文难吗？',prompt:'Choose the correct answer.',opts:['我觉得不难。','我叫李明。','我在医院。'],ans:0,why:'觉得 introduces an opinion or feeling.'},
+  {sec:'Listening',part:4,type:'Question → three answers',audio:'男：你看见我的手机了吗？',prompt:'Choose the correct answer.',opts:['看见了，在桌子上。','我喝茶。','三本书。'],ans:0,why:'看见 asks whether something has been seen/noticed.'},
+  // Reading Part 1: comprehension sentence -> question -> 3 answers
+  {sec:'Reading',part:1,type:'Sentence comprehension',text:'王明今天不去学校，他在家学习。',py:'Wáng Míng jīntiān bú qù xuéxiào, tā zài jiā xuéxí.',prompt:'王明今天去哪儿？',opts:['学校','家','医院'],ans:1,why:'He is studying at home, so he is at home.'},
+  {sec:'Reading',part:1,type:'Sentence comprehension',text:'小李有两本中文书和三个苹果。',py:'Xiǎo Lǐ yǒu liǎng běn Zhōngwén shū hé sān ge píngguǒ.',prompt:'小李有几本中文书？',opts:['一本','两本','三本'],ans:1,why:'两本 means two books.'},
+  {sec:'Reading',part:1,type:'Sentence comprehension',text:'今天很冷，妈妈在家喝茶。',py:'Jīntiān hěn lěng, māma zài jiā hē chá.',prompt:'妈妈在做什么？',opts:['喝茶','学习','工作'],ans:0,why:'喝茶 means drink tea.'},
+  {sec:'Reading',part:1,type:'Sentence comprehension',text:'我的朋友住在北京，在医院工作。',py:'Wǒ de péngyou zhù zài Běijīng, zài yīyuàn gōngzuò.',prompt:'他在哪里工作？',opts:['学校','医院','家'],ans:1,why:'医院 means hospital.'},
+  {sec:'Reading',part:1,type:'Sentence comprehension',text:'妹妹十八岁，她学习中文。',py:'Mèimei shíbā suì, tā xuéxí Zhōngwén.',prompt:'妹妹学习什么？',opts:['英文','中文','数学'],ans:1,why:'中文 means Chinese.'},
+  // Reading Part 2: sentence -> picture
+  {sec:'Reading',part:2,type:'Sentence → picture',text:'他在看电视。',py:'tā zài kàn diànshì',prompt:'Choose the matching picture.',visualChoices:[['A','📺'],['B','📚'],['C','🏥']],opts:['A','B','C'],ans:0,why:'看电视 means watch television.'},
+  {sec:'Reading',part:2,type:'Sentence → picture',text:'桌子上有一本书。',py:'zhuōzi shàng yǒu yì běn shū',prompt:'Choose the matching picture.',visualChoices:[['A','🍎'],['B','📖'],['C','☕']],opts:['A','B','C'],ans:1,why:'一本书 means one book.'},
+  {sec:'Reading',part:2,type:'Sentence → picture',text:'她坐在椅子上。',py:'tā zuò zài yǐzi shàng',prompt:'Choose the matching picture.',visualChoices:[['A','🛏️'],['B','🪑🧑'],['C','🚗']],opts:['A','B','C'],ans:1,why:'坐在椅子上 means sit on a chair.'},
+  {sec:'Reading',part:2,type:'Sentence → picture',text:'今天下雨了。',py:'jīntiān xià yǔ le',prompt:'Choose the matching picture.',visualChoices:[['A','☀️'],['B','🌧️'],['C','❄️']],opts:['A','B','C'],ans:1,why:'下雨 means it is raining.'},
+  {sec:'Reading',part:2,type:'Sentence → picture',text:'他买了三个苹果。',py:'tā mǎi le sān ge píngguǒ',prompt:'Choose the matching picture.',visualChoices:[['A','🍎🍎🍎'],['B','🍵🍵🍵'],['C','📚📚📚']],opts:['A','B','C'],ans:0,why:'三个苹果 means three apples.'},
+  // Reading Part 3: question -> answer
+  {sec:'Reading',part:3,type:'Question → answer',text:'你叫什么名字？',py:'nǐ jiào shénme míngzi',prompt:'Choose the best answer.',opts:['我叫王明。','我在北京。','我很冷。'],ans:0,why:'Name question → name answer.'},
+  {sec:'Reading',part:3,type:'Question → answer',text:'你为什么学习中文？',py:'nǐ wèishénme xuéxí Zhōngwén',prompt:'Choose the best answer.',opts:['因为我喜欢中文。','三本书。','在医院。'],ans:0,why:'为什么 asks why; 因为 gives a reason.'},
+  {sec:'Reading',part:3,type:'Question → answer',text:'你什么时候回家？',py:'nǐ shénme shíhou huí jiā',prompt:'Choose the best answer.',opts:['明天。','三个人。','很便宜。'],ans:0,why:'什么时候 asks when.'},
+  {sec:'Reading',part:3,type:'Question → answer',text:'你觉得这个怎么样？',py:'nǐ juéde zhège zěnmeyàng',prompt:'Choose the best answer.',opts:['我觉得很好。','我十八岁。','我在学校。'],ans:0,why:'怎么样 asks for an assessment/opinion.'},
+  {sec:'Reading',part:3,type:'Question → answer',text:'你看见我的手机了吗？',py:'nǐ kànjiàn wǒ de shǒujī le ma',prompt:'Choose the best answer.',opts:['看见了，在桌子上。','我学习中文。','两口人。'],ans:0,why:'看见 means see/notice; the answer gives the phone location.'},
+  // Reading Part 4: gap fill
+  {sec:'Reading',part:4,type:'Gap fill',text:'我___北京住。',py:'wǒ ___ Běijīng zhù',prompt:'Choose the word that completes the sentence.',opts:['在','是','很'],ans:0,why:'Location 在 comes before the verb in 我在北京住。'},
+  {sec:'Reading',part:4,type:'Gap fill',text:'我___这个老师。',py:'wǒ ___ zhège lǎoshī',prompt:'Choose the word that completes the sentence.',opts:['认识','知道','觉得'],ans:0,why:'认识 is used for knowing a person.'},
+  {sec:'Reading',part:4,type:'Gap fill',text:'我___今天很冷。',py:'wǒ ___ jīntiān hěn lěng',prompt:'Choose the word that completes the sentence.',opts:['觉得','认识','住'],ans:0,why:'觉得 means think/feel.'},
+  {sec:'Reading',part:4,type:'Gap fill',text:'这___书是我的。',py:'zhè ___ shū shì wǒ de',prompt:'Choose the word that completes the sentence.',opts:['本','口','岁'],ans:0,why:'本 is the measure word for books.'},
+  {sec:'Reading',part:4,type:'Gap fill',text:'他___喝茶，他喝水。',py:'tā ___ hē chá, tā hē shuǐ',prompt:'Choose the word that completes the sentence.',opts:['不','在','很'],ans:0,why:'不 negates the verb 喝.'}
+];
+let h30Pos=0,h30Answers=[],h30Started=0,h30TimerId=null,h30AudioPlays=0,h30AudioBusy=false,h30Completed=false;
+function startH30Exam(){h30Pos=0;h30Answers=Array(40).fill(null);h30Started=Date.now();h30Completed=false;h30AudioPlays=0;h30AudioBusy=false;document.getElementById('h30Intro').classList.add('hidden');document.getElementById('h30Results').classList.add('hidden');document.getElementById('h30Body').classList.remove('hidden');clearInterval(h30TimerId);h30TimerId=setInterval(updateH30Timer,1000);updateH30Timer();renderH30Question();}
+function updateH30Timer(){if(!h30Started)return;const left=Math.max(0,40*60-Math.floor((Date.now()-h30Started)/1000));document.getElementById('h30Timer').textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0');if(left===0&&!h30Completed)finishH30Exam(true);}
+function renderH30Question(){const q=h30Bank[h30Pos];document.getElementById('h30Progress').textContent=`Question ${h30Pos+1} / 40`;document.getElementById('h30PartLabel').textContent=`${q.sec} · Part ${q.part} · ${q.type}`;const p=document.getElementById('h30Prompt');p.innerHTML=q.sec==='Listening'?`<div>${q.prompt}</div>`:`<div class="big">${q.text}</div><div class="pinyin">${q.py}</div><div class="small" style="margin-top:8px">${q.prompt}</div>`;const vis=document.getElementById('h30Visual');vis.innerHTML=q.visualChoices?q.visualChoices.map(x=>`<div class="pictureCard"><div class="picture">${x[1]}</div><b>${x[0]}</b></div>`).join(''):'';const opts=document.getElementById('h30Options');opts.innerHTML='';q.opts.forEach((o,i)=>{const b=document.createElement('button');b.type='button';b.className='realOpt';b.textContent=`${String.fromCharCode(65+i)}. ${o}`;if(h30Answers[h30Pos]===i)b.classList.add('selected');b.onclick=()=>selectH30Answer(i);opts.appendChild(b)});const ac=document.getElementById('h30AudioControls');if(q.sec==='Listening'){ac.classList.remove('hidden');h30AudioPlays=0;h30AudioBusy=false;const b=document.getElementById('h30Play');b.disabled=false;b.textContent='🔊 Play audio (2 plays)';document.getElementById('h30PlayCount').textContent=''}else ac.classList.add('hidden');document.getElementById('h30Prev').disabled=h30Pos===0;document.getElementById('h30Next').textContent=h30Pos===39?'Submit exam':'Next →';}
+function selectH30Answer(i){h30Answers[h30Pos]=i;[...document.querySelectorAll('#h30Options .realOpt')].forEach((b,n)=>b.classList.toggle('selected',n===i));}
+function h30Prev(){speechSynthesis.cancel();if(h30Pos>0){h30Pos--;renderH30Question()}}
+function h30Next(){speechSynthesis.cancel();if(h30Answers[h30Pos]===null){alert('Please choose an answer before continuing.');return}if(h30Pos===39){finishH30Exam(false);return}h30Pos++;renderH30Question();}
+function playH30Audio(){const q=h30Bank[h30Pos];if(q.sec!=='Listening'||h30AudioBusy||h30AudioPlays>=2)return;h30AudioBusy=true;h30AudioPlays++;const b=document.getElementById('h30Play');b.disabled=true;document.getElementById('h30PlayCount').textContent=`Play ${h30AudioPlays} of 2`;const u=new SpeechSynthesisUtterance(q.audio);u.lang='zh-CN';u.rate=Math.min(.82,voicePrefs.rate||.78);const vs=speechSynthesis.getVoices();const v=vs.find(x=>/^zh(-|_)CN/i.test(x.lang))||vs.find(x=>/^zh/i.test(x.lang));if(v)u.voice=v;u.onend=()=>{h30AudioBusy=false;if(h30AudioPlays<2){setTimeout(()=>{b.disabled=false},300)}else{b.disabled=false;b.textContent='🔊 Audio finished (2 plays)'}};u.onerror=()=>{h30AudioBusy=false;b.disabled=false};speechSynthesis.cancel();speechSynthesis.speak(u);}
+function finishH30Exam(auto){if(h30Completed)return;h30Completed=true;clearInterval(h30TimerId);speechSynthesis.cancel();let listening=0,reading=0;const part={};const missed=[];h30Bank.forEach((q,i)=>{const ok=h30Answers[i]===q.ans;if(ok){if(q.sec==='Listening')listening++;else reading++}else missed.push({...q,index:i,chosen:h30Answers[i]});const k=q.sec+'|'+q.part;part[k]??={correct:0,total:0};part[k].total++;if(ok)part[k].correct++});const total=listening+reading,score=total*5,pass=score>=120;const weak=Object.entries(part).map(([k,v])=>({k,p:v.correct/v.total})).sort((a,b)=>a.p-b.p);const diag=weak.map(x=>{const [s,pt]=x.k.split('|');return `<div class="diagRow"><b>${s} Part ${pt}</b><span>${Math.round(x.p*100)}%</span></div>`}).join('');const mistakes=missed.length?missed.map(q=>`<div class="mistake"><b>Q${q.index+1} · ${q.sec} Part ${q.part}</b><br>${q.text||q.audio}<br><span class="small">Correct: ${q.opts[q.ans]}${q.py?' · '+q.py:''}</span><br><span class="small">${q.why}</span></div>`).join(''):'<p>Perfect score — no mistakes to review.</p>';document.getElementById('h30Body').classList.add('hidden');const r=document.getElementById('h30Results');r.classList.remove('hidden');r.innerHTML=`<div class="resultHero"><div class="resultScore">${score}/200</div><h2>${pass?'120+ threshold reached 🎉':'Below 120/200 threshold'}</h2><p>${total}/40 correct · ${auto?'Time expired.':'Exam completed.'}</p><p class="small">This is a diagnostic simulation of HSK 3.0 Level 1, not an official CTI score.</p></div><div class="grid2"><div class="stat"><b>${listening*5}/100</b>Listening</div><div class="stat"><b>${reading*5}/100</b>Reading</div></div><h3>Diagnostic by part</h3>${diag}<h3>Readiness feedback</h3><p>${weak[0].p<.7?'There is a clear weak area: '+weak[0].k.replace('|',' Part ')+'. Review that task type before retesting.':weak[0].p<.85?'Your base is developing, but at least one task type needs more consistent accuracy before you rely on a single mock.':'You are showing strong consistency across the four task types. Take several fresh mocks before treating this as stable readiness.'}</p><details><summary><b>Review ${missed.length} mistake${missed.length===1?'':'s'}</b></summary>${mistakes}</details><div class="row" style="margin-top:18px"><button class="primary" type="button" onclick="startH30Exam()">Retake HSK 3.0 Test</button><button type="button" onclick="show('quiz',document.querySelector('.tab:nth-child(3)'))">Targeted Practice</button></div>`;}
+
+const h2GrammarState={i:0};
+function renderH2Chars(){const el=document.getElementById('h2CharGrid');if(!el)return;el.innerHTML=hsk2Chars.map(c=>`<span>${c}</span>`).join('');}
+function renderH2Words(){const el=document.getElementById('h2WordList');if(!el)return;const q=(document.getElementById('h2Search')?.value||'').toLowerCase().trim();const rows=hsk2Vocab.map((v,i)=>({v,i})).filter(x=>!q||x.v.join(' ').toLowerCase().includes(q)).slice(0,80);el.innerHTML=rows.map(({v,i})=>`<div class="rule" style="margin:7px 0"><b>${i+301}. ${v[0]}</b> <span class="pinyin">${v[1]}</span><br><span class="small">${v[2]} · ${v[3]}</span><button type="button" style="float:right" onclick="speakChinese('${v[0].replace(/'/g,"\\'")}')">🔊</button></div>`).join('')+(rows.length===80?'<p class="small">Showing first 80 matches. Narrow the search to find more.</p>':'');}
+function startH2Grammar(){const c=document.getElementById('h2GrammarCard');h2GrammarState.i=Math.floor(Math.random()*hsk2Grammar.length);const g=hsk2Grammar[h2GrammarState.i];c.innerHTML=`<div class="rule"><div class="small">${h2GrammarState.i+1}/57</div><h3>${g[0]}</h3><p><b>${g[1]}</b></p><p>${g[2]}</p><div class="big">${g[3]}</div><div class="pinyin">${g[3]}</div><details><summary>Common trap</summary><p>${g[4]}</p></details><button class="primary" type="button" onclick="startH2Grammar()">Next grammar →</button></div>`;speakChinese(g[3]);}
+const h2MockBank=[
+['你比我高吗？','你比我高吗？',['Yes, you are taller than me.','No, you are not taller than me.','You are my teacher.'],0],
+['我去过北京。这里的“过”表示什么？','我去过北京。',['A completed action only','Past experience','An action happening now'],1],
+['哪一句正确？',['A','B','C'],['我跟朋友一起去。','我一起朋友跟去。','我朋友跟一起去。'],0],
+['因为下雨，____我没出去。',['A','B','C'],['但是','所以','还是'],1],
+['“我正在学习”中的正在表示：',['A','B','C'],['future plan','ongoing action','past experience'],1],
+['“这件衣服比那件贵一点儿”中的一点儿表示：',['A','B','C'],['a small difference','a large difference','a past event'],0],
+['哪个是“take a taxi”？',['A','B','C'],['打车','打开','出国'],0],
+['“我得走了”中的得读作：',['A','B','C'],['děi','de','dé'],0],
+['哪个表示“although”?',['A','B','C'],['所以','虽然','因为'],1],
+['“门开着”中的着表示：',['A','B','C'],['ongoing state','past experience','comparison'],0]
+];
+let h2Mock={i:0,score:0};
+function startH2Mock(){h2Mock={i:0,score:0};renderH2Mock();}
+function renderH2Mock(){const el=document.getElementById('h2Mock');if(!el)return;if(h2Mock.i>=h2MockBank.length){const pct=Math.round(h2Mock.score/h2MockBank.length*100);el.innerHTML=`<div class="resultHero"><div class="resultScore">${pct}%</div><h3>HSK 2 diagnostic</h3><p>${h2Mock.score}/${h2MockBank.length} correct.</p><p class="small">This short diagnostic is an app practice test, not an official CTI score.</p><button class="primary" onclick="startH2Mock()" type="button">Retake →</button></div>`;return}const q=h2MockBank[h2Mock.i];const question=q[0];const opts=q[2];el.innerHTML=`<div class="rule"><div class="small">Question ${h2Mock.i+1}/${h2MockBank.length}</div><h3>${question}</h3>${opts.map((o,i)=>`<button class="realOpt" type="button" onclick="answerH2Mock(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div>`;}
+function answerH2Mock(i){const q=h2MockBank[h2Mock.i];if(i===q[3])h2Mock.score++;h2Mock.i++;renderH2Mock();}
+updateStats(); loadCard(); loadQ(); renderWords(); renderH2Words(); renderH2Chars(); renderGrammarBank(); buildExam(); nextCharQuiz(); renderHomeTopics(); renderTopics();
+</script></body></html>
